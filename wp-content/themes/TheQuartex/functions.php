@@ -890,88 +890,21 @@ require get_template_directory() . '/inc/template-functions.php';
 require get_template_directory() . '/inc/customizer.php';
 
 /**
-* Sources for quartex apps
+* Plugin loader else load compatibility
 */
-
-/**
-*
-* Add support for various mime types
-* Backwards compatible and pluggable
-*
-*/
-if (is_file('/apps/qtx-wpfilters/quartex-add-mime-types.php')) {
-	require get_template_directory() . '/apps/qtx-wpfilters/quartex-add-mime-types.php';
-}
-/**
-*
-* Require authentication for REST API
-* Backwards compatible and pluggable
-*
-*/
-if (is_file('/apps/qtx-wpfilters/quartex-rest-api-filters.php')) {
-	require get_template_directory() . '/apps/qtx-wpfilters/quartex-rest-api-filters.php';
-}
-/**
-* RSS feed source code
-* rss-php
-* Backwards compatible and pluggable
-*
-*/
-if (is_file('/inc/src/rss/Feed.php')) {
-	require get_template_directory() . '/inc/src/rss/Feed.php';
-}
-/**
-*
-* simple_scraper_dom source code
-* scraper
-* Backwards compatible and pluggable
-*
-*/
-if (is_file('/inc/src/scraper/simple_html_dom.php')) {
-	require get_template_directory() . '/inc/src/scraper/simple_html_dom.php';
-}
-/**
-* Load qtx-rss plugin/app
-* Backwards compatible and pluggable
-*
-*/
-if (is_file('/apps/qtx-rss/qtx-rss-load.php')) {
-	require get_template_directory() . '/apps/qtx-rss/qtx-rss-load.php';
-}
-/**
-* Load qtx-anonymize plugin/app
-* Backwards compatible and pluggable
-*
-*/
-if (is_file( '/apps/qtx-anonymize/anonymize-load.php')) {
-	require get_template_directory() . '/apps/qtx-anonymize/anonymize-load.php';
-}
-/**
-* Load qtx-cache plugin/app
-* Backwards compatible and pluggable
-*
-*/
-if (is_file('/apps/qtx-cache/qtx-cache-load.php')) {
-	require get_template_directory() . '/apps/qtx-cache/qtx-cache-load.php';
+$qtx_plugin_loader = get_template_directory() . '/apps/plugin-loader.php';
+if (is_file($qtx_plugin_loader)) {
+	require $qtx_plugin_loader;
+} else {
+	if (!function_exists('qtxEchoDownloads')) {
+		function qtxEchoDownloads() {
+			return;
+		}
+	}
 }
 /**
  * Load Jetpack compatibility file.
- * Backwards compatible and pluggable
- *
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
-}
-/*
-*
-* Plugin compatible
-* Backwards compatible and pluggable
-*
-*
-*/
-if (!function_exists('qtxEchoDownloads')) {
-	function qtxEchoDownloads() {
-		return;
-	}
-	// code...
 }
