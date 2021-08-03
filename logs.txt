@@ -1,0 +1,16 @@
+QuartexBaseDark is a exact copy from the wpQuartex because it's the old look and feel, probably it will be another release but idk, archiving purposes
+_________________________________________
+wpQuartex remains intact, it will be based in the final version of TheQuartex
+      -Third priority
+_________________________________________
+QuartexBaseNew will be based in the final version of TheQuartex so it's empty
+      -Second priority
+_________________________________________
+wpQuartexPro it's empty
+      -Final priority
+_________________________________________
+TheQuartex it's my work from two or three weeks i don't remember anymore
+      -First priority
+      -Current working directory
+_________________________________________
+24-10-20 - Korko
