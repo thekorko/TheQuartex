@@ -63,8 +63,9 @@ class WPUF_Form_Field_Post_Content extends WPUF_Field_Contract {
                 // 'textarea_rows' => $field_settings['rows'],
                 'quicktags'     => false,
                 'media_buttons' => false,
+                'plugins' => 'tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpfullscreen',
                 'tinymce'       => array(
-                    'toolbar1'      => 'image,media,bold,italic,underline,separator,alignleft,aligncenter,alignright,paste,link,unlink,separator,code,charmap,undo,redo,fullscreen',
+                    'toolbar1'      => 'blockquote,image,media,bold,link,unlink,italic,underline,separator,alignleft,aligncenter,alignright,undo,redo,code,charmap,wpfullscreen,wpemoji',
                     'toolbar2'      => '',
                     'toolbar3'      => '',
                   ),
