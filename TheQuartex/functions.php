@@ -375,10 +375,12 @@ function qtx_category_icon() {
 				//echo "i found result";
 				//echo $name;
 				//var_dump($icons[$name]);
-				$categoryIcon = $icons[$name];
+				//$categoryIcon = $icons[$name];
 				//icons was empty because it was found on the spanish one, but i asigned the english one(array item).
-				if (empty($categoryIcon)) {
+				if (!empty($iconos[$name])) {
 					$categoryIcon = $iconos[$name];
+				} else {
+					$categoryIcon = $icons[$name];
 				}
 				//print_r($icons);
 				//TODO cache_it
