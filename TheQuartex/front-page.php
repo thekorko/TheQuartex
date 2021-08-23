@@ -30,12 +30,14 @@ get_header();
 				$type = "normal";
 				?>
 				<?php while (have_posts()) : the_post(); ?>
-					<?php qtx_echo_post_box($j, $type); ?>
+					<?php if (!qtx_filter_shitpost()): ?>
+						<?php qtx_echo_post_box($j, $type); ?>
+						<?php if (($j == 1)) :
+							$j = $j + 1; //hack horrible y asqueroso arreglar
+							//si ponia este if abajo del otro if se rompia todo
+						?>
+					<?php endif; ?>
 					<!--TODO reescribir como una funcion -->
-					<?php if (($j == 1)) :
-						$j = $j + 1; //hack horrible y asqueroso arreglar
-						//si ponia este if abajo del otro if se rompia todo
-					?>
 						<div id="featured-<?php echo($j) ?>" class="base-box post-box">
 						<!--featured-post-->
 						<?php	get_sidebar( 'featured-post' ); ?>

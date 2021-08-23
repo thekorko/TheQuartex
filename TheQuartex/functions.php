@@ -400,6 +400,9 @@ function qtx_category_icon() {
 	return "<i class='fas $categoryIcon'></i>";
 }
 
+/*
+*
+*/
 
 function qtx_echo_post_list() { ?>
 		<li class="item-post-list">
@@ -615,7 +618,9 @@ function qtx_user_info($userID = 0) {
 }
 
 // TODO: custom cache functionality
-
+/*
+* Authentication functions
+*/
 //Checks if user is a staff member
 function qtx_is_staff() {
 	if (is_user_logged_in()) {
@@ -628,7 +633,46 @@ function qtx_is_staff() {
 		}
 	}
 }
-
+/*
+* Allow certain roles to full downloads
+*/
+function qtx_downloads_acccess() {
+	if (is_user_logged_in()) {
+		$user = wp_get_current_user();
+		$staff_roles = array('qtx_user','qtx_noob','editor', 'administrator');
+		if ((array_intersect($staff_roles, $user->roles))) {
+			return True;
+		} else {
+			return False;
+		}
+	}
+}
+/*
+* Filter random and crap posts from index
+*/
+function qtx_filter_shitpost() {
+	global $post;
+	//TODO optimize
+	//Get the category wp_term array from current post
+	$categoryObjects = get_the_category(get_the_ID());
+	$disabled = array('memes','random_es','random_en','memes_es');
+	//For every object we get the name
+	for ($i=0; $i < count($categoryObjects); $i++) {
+		$cats = array();
+		array_push($cats,strtolower($categoryObjects[$i]->name));
+	}
+	if (!empty($cats)) {
+		if (array_intersect($disabled,$cats)) {
+			//The category is shitpost
+			return True;
+		} else {
+			return False;
+		}
+	} else {
+	//The post doesn't have category
+	return False;
+	}
+}
 //Checks if user is a API member
 function qtx_is_API() {
 	if (is_user_logged_in()) {
