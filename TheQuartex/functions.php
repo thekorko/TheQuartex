@@ -376,6 +376,8 @@ function qtx_category_icon() {
 				//echo $name;
 				//var_dump($icons[$name]);
 				//$categoryIcon = $icons[$name];
+				//$categoryIcon = $icons[$name];
+				//icons was empty because it was found on the spanish one, but i asigned the english one(array item).
 				//icons was empty because it was found on the spanish one, but i asigned the english one(array item).
 				if (!empty($iconos[$name])) {
 					$categoryIcon = $iconos[$name];
@@ -541,7 +543,6 @@ function qtx_profile_img() {
 	if (1 == 2) {
 		//get_avatar($userID);
 	}
-
 }
 */
 
@@ -613,61 +614,7 @@ function qtx_user_info($userID = 0) {
 	//https://www.tutorialspoint.com/php/php_functions.htm
 }
 
-//TODO
-//All of this is to optimize queries and preserve order in code, and to not repeat code.
-//This will be useful for caching functionality and usability for admin(chill)
-//We need to create a function to add a theme display settings Menu in dashboard
-//Then we initialize during Init, by a callback
-//In said menu we could setup how do we display quartex homepage in detail, for example, which boxes to show, etc
-
-//Then we will add another settings page in dashboard in which we have a form, from which we can customize certain querys, for example the blog page or another custom querys
-//values for wp_query($args) look like this:
-	//pre arguments
-	//$roles_query = array('Administrator', 'Editor');
-	//categories
-	//pre arguments
-	//$cats_query = array( 'blog', 'inventa_wordpress', 'quartexnet_es', 'quartexnet_en', 'quartexnet' );
-
-//So one approach is to, create text fields in the settings page to enter comma separated values, and those values will go to query variables, i think this might be insecure or unreliable.
-//Another approach would be:
-		//A variable with default values $blog_cats_query = array( 'blog', 'inventa_wordpress', 'quartexnet_es', 'quartexnet_en', 'quartexnet' );
-		//Those values would be type category, so in settings page we could retrive categories and customize the query via a a selection of checkboxes.
-		//Samme with user roles, this would prevent accidentally misstyping a value, and having to validate a string, into an array
-		//This would obviously follow the basic steps of retrieve, modify by user, validate, update, retrieve.. #Investigate on wordpress best practices for validation
-
-//So basically we need to register these settings for use, create an UI using wordpress API, retrieve the data to show in said UI and make it securelly updatable, and call these settings using qtx_query_args('blog')
-//https://blog.templatetoaster.com/wordpress-settings-api-creating-theme-options/
-
-
-//function register_settings_theme() {
-//register query args
-//register display config for homepage
-
-//}
-
-//function qtx_query_args() {
-	//args array
-	//retrieve Options from dashboard settings
-	//the output of this function variable will be used in a query so it need to be used securelly
-	//i'm a little bit lost.
-
-//}
-
-//this is somewhat similar to plugins
-//https://wordpress.org/plugins/wp-query-creator/
-//qtx_query_posts() {
-	//check if cache exists
-	//check for arguments
-	//execute a query
-//}
-
 // TODO: custom cache functionality
-// qtx_simple_post_cache () {
-//check if cache exists
-//create or update cache
-//output cache
-//}
-
 
 //Checks if user is a staff member
 function qtx_is_staff() {
@@ -694,6 +641,7 @@ function qtx_is_API() {
 		}
 	}
 }
+
 //Prints some tools for logged in users and some tools for logged out users
 function qtx_user_tools() {
 	//TODO expand functionality
@@ -851,7 +799,6 @@ if (is_page(array( 'about-us', 'contact', 'management' )) ) {
 	  					'0.0'
 	  					);
 	}
-
 	add_action( 'wp_enqueue_scripts', 'flexbox_grid');
 }
 */
@@ -892,62 +839,21 @@ require get_template_directory() . '/inc/template-functions.php';
 require get_template_directory() . '/inc/customizer.php';
 
 /**
-* Sources for quartex apps
+* Plugin loader else load compatibility
 */
-
-/**
-* Add support for various mime types
-*/
-if (is_file('/apps/qtx-wpfilters/quartex-add-mime-types.php')) {
-	require get_template_directory() . '/apps/qtx-wpfilters/quartex-add-mime-types.php';
-}
-/**
-* Require authentication for REST API
-*/
-if (is_file('/apps/qtx-wpfilters/quartex-rest-api-filters.php')) {
-	require get_template_directory() . '/apps/qtx-wpfilters/quartex-rest-api-filters.php';
-}
-/**
-* RSS feed source code
-* rss-php
-*/
-if (is_file('/inc/src/rss/Feed.php')) {
-	require get_template_directory() . '/inc/src/rss/Feed.php';
-}
-/**
-* simple_scraper_dom source code
-* scraper
-*/
-if (is_file('/inc/src/scraper/simple_html_dom.php')) {
-	require get_template_directory() . '/inc/src/scraper/simple_html_dom.php';
-}
-/**
-* Load qtx-rss plugin/app
-*/
-if (is_file('/apps/qtx-rss/qtx-rss-load.php')) {
-	require get_template_directory() . '/apps/qtx-rss/qtx-rss-load.php';
-}
-/**
-* Load qtx-anonymize plugin/app
-*/
-if (is_file( '/apps/qtx-anonymize/anonymize-load.php')) {
-	require get_template_directory() . '/apps/qtx-anonymize/anonymize-load.php';
-}
-/**
-* Load qtx-cache plugin/app
-*/
-if (is_file('/apps/qtx-cache/qtx-cache-load.php')) {
-	require get_template_directory() . '/apps/qtx-cache/qtx-cache-load.php';
+$qtx_plugin_loader = get_template_directory() . '/apps/qtx-plugin-loader.php';
+if (is_file($qtx_plugin_loader)) {
+	require $qtx_plugin_loader;
+} else {
+	if (!function_exists('qtxEchoDownloads')) {
+		function qtxEchoDownloads() {
+			return;
+		}
+	}
 }
 /**
  * Load Jetpack compatibility file.
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
-}
-if (!function_exists('qtxEchoDownloads')) {
-	function qtxEchoDownloads() {
-		qtx_echo_post_box(1,'post');
-	}
-	// code...
 }
