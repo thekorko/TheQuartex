@@ -100,6 +100,13 @@ if ( ! function_exists( 'thequartex_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'thequartex_setup' );
 
+/* TODO disable site kit,adsense and monsterinsights on private pages
+if (!qtx_is_staff()) {
+	$network_wide = True;
+	do_action( 'googlesitekit_deactivation', $network_wide );
+}
+*/
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -648,7 +655,20 @@ function qtx_downloads_acccess() {
 	}
 }
 /*
+* Quartex Only content
+* TODO make it better
+* https://developer.wordpress.org/reference/functions/do_shortcode/
+*/
+function qtx_user_check_shortcode($atts, $content = null) {
+	if (is_user_logged_in() && !is_null($content)) {
+		return do_shortcode($content);
+	}
+	return;
+}
+add_shortcode('qtx', 'qtx_user_check_shortcode');
+/*
 * Filter random and crap posts from index
+* TODO bug in frontpage it does count as post
 */
 function qtx_filter_shitpost() {
 	global $post;
@@ -673,6 +693,48 @@ function qtx_filter_shitpost() {
 	return False;
 	}
 }
+/*
+* Display a category widget full and for frontpage
+* https://developer.wordpress.org/reference/functions/wp_list_categories/
+* TODO doesn't work
+*/
+function qtx_cat_list($case) {
+	$categories = get_categories( array(
+		'orderby' => 'name',
+		'order'   => 'ASC'
+	) );
+switch ($case) {
+	case 'full':
+	foreach ($categories as $category) {
+		$name = $category->name;
+	}
+	case 'front':
+	$includecats = array('Videojuegos','Videogames','Software_hub','technology','tecnologia','centro_de_software','descargas','downloads');
+	echo "<style>
+				.catlist-front {
+					font-family: Pirata One;
+					font-weight: 800;
+					font-size: 1.4rem;
+					font-style: italic;
+					border-radius: 3px;
+					border: dotted 3px;
+					border-color: #EE004D;
+				}
+				</style>";
+				//TODO doesn't work
+	foreach ($categories as $category) {
+		$catname = $category->name;
+		$catsnames = array();
+		array_push($catsnames, $catname);
+	}
+	if (array_intersect($catsnames, $includecats)) {
+		echo "test";
+		echo "<div class='catlist-front'>$catname</div>";
+	}
+	break;
+}
+}
+
 //Checks if user is a API member
 function qtx_is_API() {
 	if (is_user_logged_in()) {
