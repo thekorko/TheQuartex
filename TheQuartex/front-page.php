@@ -29,14 +29,46 @@ get_header();
 				<?php $j = 1;
 				$type = "normal";
 				?>
-				<?php while (have_posts()) : the_post(); ?>
-					<?php if (!qtx_filter_shitpost()): ?>
+				<?php
+				if (qtx_is_staff()) {
+					//testing if this could work fine
+					$statuses = array('publish','pending');
+				} else {
+					$statuses = array('publish');
+				}
+				$excludedcats = array();
+				$categories = get_categories( array(
+					'orderby' => 'name',
+					'order'   => 'ASC'
+				) );
+				$cats_query = array( 'memes','random_es','random_en','memes_es' );
+				foreach ($categories as $category) {
+					//TODO fix it doesnt work
+					if (in_array(strtolower($category->name),$cats_query)) {
+						//it never is true
+						array_push($excludedcats, $category->term_id);
+					}
+					//var_dump($excludedcats);
+				}
+
+				$post_query_args = array(
+						//we only get roles_query userIDs see above get_users() query
+				    'post_type' => 'post',
+						'posts_per_page' => 15,
+						'post_status' => $statuses,
+						//get paged, this is a secured wordpress way of getting pages
+						'paged' => $paged,
+						//tax query to find only posts from the cats_query categories taxonomy
+						'category__not_in', $excludedcats
+				);
+				$query = new WP_Query($post_query_args); ?>
+			  <?php while ( $query->have_posts() ) : $query->the_post(); ?>
 						<?php qtx_echo_post_box($j, $type); ?>
 						<?php if (($j == 1)) :
 							$j = $j + 1; //hack horrible y asqueroso arreglar
 							//si ponia este if abajo del otro if se rompia todo
 						?>
-					<?php endif; ?>
+						<?php endif; ?>
 					<!--TODO reescribir como una funcion -->
 						<div id="featured-<?php echo($j) ?>" class="base-box post-box">
 						<!--featured-post-->
@@ -53,7 +85,6 @@ get_header();
 						}
 						?>
 
-					<?php endif; ?>
 					<?php if (($j % 5) == 0) :
 						$j = $j + 1; //hack horrible y asqueroso arreglar
 						//si ponia este if abajo del otro if
