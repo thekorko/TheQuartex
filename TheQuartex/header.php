@@ -87,13 +87,6 @@
 /*
 	* Font fonts typeface TODO check licenses
 */
-	/*
-		@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-		@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
-		@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
-		@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
-		@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-	*/
 	@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Roboto:wght@300;400;700&display=swap');
 	</style>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
