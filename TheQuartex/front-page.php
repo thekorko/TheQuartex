@@ -68,12 +68,12 @@ get_header();
 							$j = $j + 1; //hack horrible y asqueroso arreglar
 							//si ponia este if abajo del otro if se rompia todo
 						?>
-						<?php endif; ?>
-					<!--TODO reescribir como una funcion -->
 						<div id="featured-<?php echo($j) ?>" class="base-box post-box">
 						<!--featured-post-->
 						<?php	get_sidebar( 'featured-post' ); ?>
 						</div>
+						<?php endif; ?>
+					<!--TODO reescribir como una funcion -->
 						<?php
 						//This should be a query cached, otherwise it would be too much
 						//This displays 4 downloads on page 1
