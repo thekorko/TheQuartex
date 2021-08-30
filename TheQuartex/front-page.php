@@ -32,9 +32,9 @@ get_header();
 				<?php
 				if (qtx_is_staff()) {
 					//testing if this could work fine
-					$statuses = array('publish','pending');
+					$statuses = array('publish','pending','private');
 				} else {
-					$statuses = array('publish');
+					$statuses = array('publish','private');
 				}
 				$excludedcats = array();
 				$categories = get_categories( array(
