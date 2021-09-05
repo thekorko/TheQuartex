@@ -419,8 +419,8 @@ function qtx_echo_post_list() { ?>
 			/** This should be rewritten as a function, because we will need more tweaking for the titles, and should be generalistic, so we can apply it to post_excerpt */
 			global $post;
 			if (strlen($post->post_title) > 32) {
-			echo substr(the_title($before = '', $after = '', FALSE), 0, 32) . '...'; } else {
-			the_title();
+				echo substr(the_title($before = '', $after = '', FALSE), 0, 32) . '...'; } else {
+				the_title();
 			}
 		?>
 			</a>
@@ -430,17 +430,66 @@ function qtx_echo_post_list() { ?>
 <?php
 }
 
-function qtx_echo_post_box($j, $type) { ?>
+/*Receives data about attachments and print a post box*/
+function qtx_echo_thumb_box($id, $type, $class, $thumbimg, $mimetype) { ?>
+	<!--div clickeable-->
+	<a href="<?php /*TODO make attachment post type single page*/ the_permalink($id) ?>" title="<?php printf(__('Memes y random stuff only Quartex %s', 'kubrick'), the_title_attribute('echo=0')); ?>">
+	<div id="post-<?php echo($id) ?>" class="base-box post-box post-<?php echo($type); ?>"> <!-- This is the main box for each post within the post loop -->
+			<!--End of the upper toolbar -->
+			<!--link to the post-->
+			<div id="post-title"> <!--This is the title row-->
+				<div class="post-title">
+				<span><h4 class="post-title-h4">
+				<center>
+					<?php echo(qtx_category_icon()); ?>
+					<?php
+						/** This should be rewritten as a function, because we will need more tweaking for the titles, and should be generalistic, so we can apply it to post_excerpt */
+						//global $post;
+						//if (strlen($post->post_title) > 52) {
+						/*TODO fix, function the_title doesn't support passing an $ID*/
+						echo(get_the_title($id));
+						//echo substr(the_title($before = '', $after = '', FALSE), 0, 52) . '...'; } else {
+						//the_title();
+						//}
+					?>
+				</center>
+			</div>
+		</div>
+		<div id="post-thumb" class="row"> <!--Thumbnail image, could it be a background? -->
+			<div class="post-thumb">
+				<?php
+				/*Checks how to embed the content in the box*/
+				if ($type == 'thumbpost') {
+					echo $thumbimg;
+				} elseif($type == 'vidpost') {
+					echo('<video controls width="300" height="300">
+					    		<source src="'.$thumbimg.'"type="'.$mimetype.'">
+					    		Sorry, your browser doesnt support embedded videos.
+								</video>');
+				}
+					/*TODO Check if doing somthing here*/
+					/*TODO adds option for upvote, approve etc*/
+				?>
+			</div>
+		</div>
+		<center>
+		<p><?php echo substr(wp_get_attachment_caption( $id ), 0, 120) . '...'; ?></p>
+		</center>
+		<!--DMCA-->
+		<!--div clickeable-->
+	</div>
+	<!--div clickeable-->
+	</a> <!--link to the post-->
+<?php
+}
 
-	<!-- <div id="post-<?php //echo($j) ?>" class="col-xs-12 col-md-5 col-lg-3 base-box post-box relative-box"> This is the main box for each post within the post loop -->
+function qtx_echo_post_box($j, $type) { ?>
 	<!--div clickeable-->
 	<a href="<?php the_permalink() ?>" title="<?php printf(__('Descargar %s', 'kubrick'), the_title_attribute('echo=0')); ?>">
 	<div id="post-<?php echo($j) ?>" class="base-box post-box post-<?php echo($type); ?>"> <!-- This is the main box for each post within the post loop -->
 			<!--End of the upper toolbar -->
 			<!--link to the post-->
-			<!-- <div id="post-title" class="row"> This is the title row-->
 			<div id="post-title"> <!--This is the title row-->
-				<!-- <div class="post-title col-xs-12"> -->
 				<div class="post-title">
 				<span><h4 class="post-title-h4">
 				<center>
@@ -632,7 +681,7 @@ function qtx_user_info($userID = 0) {
 function qtx_is_staff() {
 	if (is_user_logged_in()) {
 		$user = wp_get_current_user();
-		$staff_roles = array('editor', 'administrator');
+		$staff_roles = array('qtx_mod', 'editor', 'administrator');
 		if ((array_intersect($staff_roles, $user->roles))) {
 			return True;
 		} else {
@@ -646,7 +695,21 @@ function qtx_is_staff() {
 function qtx_downloads_acccess() {
 	if (is_user_logged_in()) {
 		$user = wp_get_current_user();
-		$staff_roles = array('qtx_user','qtx_noob','editor', 'administrator');
+		$staff_roles = array('qtx_user', 'qtx_noob', 'qtx_mod', 'qtx_full', 'qtx_pro', 'qtx_vip', 'editor', 'administrator');
+		if ((array_intersect($staff_roles, $user->roles))) {
+			return True;
+		} else {
+			return False;
+		}
+	}
+}
+/*
+* Allow certain roles to moderation
+*/
+function qtx_moderation_acccess() {
+	if (is_user_logged_in()) {
+		$user = wp_get_current_user();
+		$staff_roles = array('qtx_user', 'qtx_mod', 'qtx_full', 'qtx_pro', 'qtx_vip', 'editor', 'administrator');
 		if ((array_intersect($staff_roles, $user->roles))) {
 			return True;
 		} else {
