@@ -14,6 +14,9 @@
 
 //TODO fix col-md-5
 get_header();
+global $wp;
+$currentURL = home_url( $wp->request );
+//$homeURL = home_url();
 ?>
 <div id="primary" class="primary">
 	<!--Primary content area, sidebar, content, posts, galleries,etc-->
@@ -30,11 +33,23 @@ get_header();
 				$type = "normal";
 				?>
 				<?php
-				if (qtx_is_staff()) {
+				if (qtx_moderation_acccess()) {
 					//testing if this could work fine
-					$statuses = array('publish','pending','private');
+					//Save links in this array using array_push or something
+					$links = array('moderation' => "$currentURL/?moderation=yes", );
+					//echo this link
+					$moderation_link = '<a href="'.$links['moderation'].'">Moderation</a>';
+					if (isset($_GET['moderation']) && (htmlspecialchars($_GET['moderation']) == 'yes')) {
+						$statuses = array('pending');
+					} else {
+						$statuses = array('publish','private');
+					}
 				} else {
-					$statuses = array('publish','private');
+					if (is_user_logged_in()) {
+						$statuses = array('publish','private');
+					} else {
+						$statuses = array('publish');
+					}
 				}
 				$excludedcats = array();
 				$categories = get_categories( array(
