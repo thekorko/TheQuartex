@@ -18,16 +18,50 @@ get_header();
 	<?php	get_sidebar(); ?>
 	<main id="main" class="main-content">
 		<div id="main-posts" class="main-posts">
+			<?php
+			 $attachments = get_posts( array(
+									'post_type' => 'attachment',
+									'posts_per_page' => 5,
+									'paged' => $paged,
+									'post_parent' => $post->ID,
+									'exclude'     => get_post_thumbnail_id()
+							) );
+
+											if ( $attachments ) {
+													foreach ( $attachments as $attachment ) {
+															//var_dump($attachment->post_mime_type);
+															$images = array('image/jpeg','image/png','image/gif','image/webp');
+															$videos = array('video/mpeg','video/mp4','video/quicktime','video/webm');
+
+
+															if (in_array($attachment->post_mime_type, $images)) {
+																$thumbimg = wp_get_attachment_image( $attachment->ID, 'thumbnail', false );
+																$bien = True;
+																$type = 'thumbpost';
+															} elseif (in_array($attachment->post_mime_type, $videos)) {
+																$thumbimg = wp_get_attachment_url( $attachment->ID);
+																$bien = True;
+																$type = 'vidpost';
+															} else {
+																$bien = False;
+															}
+															if ($bien==True) {
+																$class = "post-attachment mime-" . sanitize_title( $attachment->post_mime_type );
+																qtx_echo_thumb_box($attachment->ID, $type, $class, $thumbimg, $attachment->post_mime_type);
+															}
+													}
+											}
+							?>
 <?php
 //categories
 //pre arguments
 //TODO make this modificable with dashboard options
 //Query paramaeter https://developer.wordpress.org/reference/classes/wp_query/
 //https://developer.wordpress.org/reference/functions/query_posts/
-$cats_query = array( 'memes','random-es','random-en','memes-es' );
+$cats_query = array( 'memes','random-es','random-en','memes-es','multimedia','videojuegos','tecnologia','quartexnet' );
 if (qtx_is_staff()) {
 	//testing if this could work fine
-	$statuses = array('publish','pending');
+	$statuses = array('publish');
 } else {
 	$statuses = array('publish');
 }
@@ -39,19 +73,19 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 //TODO do not repeat this code?
 //TODO include pending status on unmoderated
 $post_query_args = array(
-		//we only get roles_query userIDs see above get_users() query
-    'post_type' => 'post',
-		'posts_per_page' => 15,
-		'post_status' => $statuses,
-		//get paged, this is a secured wordpress way of getting pages
-		'paged' => $paged,
-		//tax query to find only posts from the cats_query categories taxonomy
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'category',
-            'field'    => 'slug',
-            'terms'    => $cats_query,
-						'include_children' => true,
+						//we only get roles_query userIDs see above get_users() query
+    				'post_type' => 'post',
+						'posts_per_page' => 10,
+						'post_status' => $statuses,
+						//get paged, this is a secured wordpress way of getting pages
+						'paged' => $paged,
+						//tax query to find only posts from the cats_query categories taxonomy
+    				'tax_query' => array(
+        				array(
+            				'taxonomy' => 'category',
+            				'field'    => 'slug',
+            				'terms'    => $cats_query,
+										'include_children' => true,
         ),
     ),
 );
