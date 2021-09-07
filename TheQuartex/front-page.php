@@ -99,7 +99,8 @@ $currentURL = home_url( $wp->request );
 						//This should be a query cached, otherwise it would be too much
 						//This displays 4 downloads on page 1
 						//Show the downloads, but cached ;)
-						if ( !is_paged() ) {
+						if ( !is_paged() && $j == 2) {
+							$j = $j + 1;
 							//Don't run qtxDownloadsCache, it's a wp-cron
 							//qtxDownloadsCache_run_cron();
 							qtxEchoDownloads();
