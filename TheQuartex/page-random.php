@@ -58,7 +58,7 @@ get_header();
 //TODO make this modificable with dashboard options
 //Query paramaeter https://developer.wordpress.org/reference/classes/wp_query/
 //https://developer.wordpress.org/reference/functions/query_posts/
-$cats_query = array( 'memes','random-es','random-en','memes-es','multimedia','videojuegos','tecnologia','quartexnet' );
+$cats_query = array( 'memes','random-es','random-en','memes-es','random');
 if (qtx_is_staff()) {
 	//testing if this could work fine
 	$statuses = array('publish');
