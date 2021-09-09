@@ -23,6 +23,20 @@ $currentURL = home_url( $wp->request );
 	<!--class="content-area"-->
 	<!--Esta sidebar es lateral generica, es la default.-->
 	<?php get_sidebar('sidebar-1'); ?>
+	<style>
+	.home-buttons-top {
+		display: flex;
+		align-items: center;
+	}
+	</style>
+	<div id="quartex-buttons" class="home-buttons-top">
+		<img src="<?php bloginfo('template_directory'); ?>/img/sections/downloads.png">
+		<img src="<?php bloginfo('template_directory'); ?>/img/sections/moderation.png">
+		<img src="<?php bloginfo('template_directory'); ?>/img/sections/randomposts.png">
+		<img src="<?php bloginfo('template_directory'); ?>/img/sections/descargas.png">
+		<img src="<?php bloginfo('template_directory'); ?>/img/sections/posteosrandom.png">
+		<img src="<?php bloginfo('template_directory'); ?>/img/sections/moderacion.png">
+	</div>
 	<main id="main-content" class="main-content">
 		<?php get_sidebar('home-area-top'); ?>
 		<div id="main-posts" class="main-posts">
