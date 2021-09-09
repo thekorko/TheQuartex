@@ -541,6 +541,7 @@ p {
 /*El margin/padding deberia ser minimo en pantallas small*/
 .main-posts {
   display: grid;
+  grid-template-rows: auto;
   grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
   grid-gap: 2em 10px;
   margin: 0 0.5em 0 2em;
