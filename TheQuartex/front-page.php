@@ -16,7 +16,7 @@
 get_header();
 global $wp;
 $currentURL = home_url( $wp->request );
-//$homeURL = home_url();
+$homeURL = home_url();
 ?>
 <div id="primary" class="primary">
 	<!--Primary content area, sidebar, content, posts, galleries,etc-->
@@ -27,19 +27,27 @@ $currentURL = home_url( $wp->request );
 	.home-buttons-top {
 		display: flex;
 		align-items: center;
+		padding-left: 2em;
+		margin-bottom: -1.6em;
+	}
+	.home-buttons-top a {
+		margin-right: -10em;
+	}
+	.qtxbtn {
+		width: 50%;
+		height: auto;
+
+	}
+	.qtxbtn:hover {
+		color: black;
+		transition-duration: 3s;
+		margin-bottom: -0.3em;
 	}
 	</style>
-	<div id="quartex-buttons" class="home-buttons-top">
-		<img src="<?php bloginfo('template_directory'); ?>/img/sections/downloads.png">
-		<img src="<?php bloginfo('template_directory'); ?>/img/sections/moderation.png">
-		<img src="<?php bloginfo('template_directory'); ?>/img/sections/randomposts.png">
-		<img src="<?php bloginfo('template_directory'); ?>/img/sections/descargas.png">
-		<img src="<?php bloginfo('template_directory'); ?>/img/sections/posteosrandom.png">
-		<img src="<?php bloginfo('template_directory'); ?>/img/sections/moderacion.png">
-	</div>
+
 	<main id="main-content" class="main-content">
+
 		<?php get_sidebar('home-area-top'); ?>
-		<div id="main-posts" class="main-posts">
 			<!--Esta sidebar esta pensada para agregar contenido dinamico de marketing organico dentro de home.php por sobre el contenido-->
 			<!--This sidebar could show a list of paragraphs or something like that, like a slider-->
 			<?php if (have_posts()) : ?>
@@ -64,7 +72,24 @@ $currentURL = home_url( $wp->request );
 					} else {
 						$statuses = array('publish');
 					}
-				}
+				} ?>
+				<div id="quartex-buttons" class="home-buttons-top">
+					<?php if (pll_current_language()=='en'): ?>
+						<a href="<?=$homeURL.'/downloads'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/downloads.png"></a>
+						<a href="<?=$homeURL.'/random_en'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/randomposts.png"></a>
+						<?php if (qtx_moderation_acccess()): ?>
+							<a href="<?=$links['moderation']?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/moderation.png"></a>
+						<?php endif; ?>
+					<?php else: ?>
+						<a href="<?=$homeURL.'/descargas'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/descargas.png"></a>
+						<a href="<?=$homeURL.'/random_es'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/posteosrandom.png"></a>
+						<?php if (qtx_moderation_acccess()): ?>
+						<a href="<?=$links['moderation']?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/moderacion.png"></a>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+				<div id="main-posts" class="main-posts">
+				<?php
 				$excludedcats = array();
 				$categories = get_categories( array(
 					'orderby' => 'name',
@@ -137,6 +162,8 @@ $currentURL = home_url( $wp->request );
 					<?php qtx_navigation(); ?>
 				</div>
 				<?php get_template_part( 'template-parts/large-box' ); ?>
+			<?php else: ?>
+	<div id="main-posts" class="main-posts">
 			<?php endif; ?>
 	</main>
 </div><!-- #primary -->
