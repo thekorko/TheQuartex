@@ -72,7 +72,7 @@ $post_query_args = array(
 			<br>
 		</div><!-- #main-posts -->
 		<div id="posts-pagination" class="post-pagination">
-			<?php wp_pagenavi(array( 'query' => $the_query )); ?>
+			<?php qtx_navigation(array( 'query' => $the_query )); ?>
 			<?php wp_reset_postdata(); ?>
 			<!-- pagination here -->
 		</div>
