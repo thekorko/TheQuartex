@@ -554,23 +554,26 @@ function qtx_echo_post_blog() { ?>
 <?php
 }
 
-function qtx_navigation() {
+function qtx_navigation($customquery = array()) {
 	if ( is_plugin_active( 'wp-pagenavi/wp-pagenavi.php' ) ) {
 		//check if wp-pagenavi is active
-		if (is_front_page()) {
-			wp_pagenavi();
+		if ($customquery) {
+			wp_pagenavi($customquery);
 		} else {
-			if(!empty($the_query)) {
-				//are we on a custom query?
-				global $the_query;
+			if (is_front_page()) {
+				wp_pagenavi();
 			} else {
-				//we are on author, archive, etc.
-				global $wp_query;
-				$the_query = $wp_query;
+				if(!empty($the_query)) {
+					//are we on a custom query?
+					global $the_query;
+				} else {
+					//we are on author, archive, etc.
+					global $wp_query;
+					$the_query = $wp_query;
+				}
+				wp_pagenavi(array( 'query' => $the_query ));
 			}
-			wp_pagenavi(array( 'query' => $the_query ));
 		}
-
 	} else {
 		//fix does not work
 		echo "Wp pagenavi is disabled and the posts_navigation does not work<br>";
@@ -729,6 +732,16 @@ function qtx_user_check_shortcode($atts, $content = null) {
 	return;
 }
 add_shortcode('qtx', 'qtx_user_check_shortcode');
+/*
+* center shortcode for stupid pages bullshit my fucking god
+* https://developer.wordpress.org/reference/functions/do_shortcode/
+*/
+/*
+function qtx_center_shortcode($atts, $content = null) {
+	return do_shortcode('<center>'.$content.'</center>');
+}
+add_shortcode('center', 'qtx_center_shortcode');
+*/
 /*
 * Filter random and crap posts from index
 * TODO bug in frontpage it does count as post
