@@ -87,6 +87,20 @@ $homeURL = home_url();
 						<a href="<?=$links['moderation']?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/moderacion.png"></a>
 						<?php endif; ?>
 					<?php endif; ?>
+					<?php if (qtx_is_staff()): ?>
+					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;" href="<?=$currentURL.'/?qtxcache=yes'?>">Update DDL Cache</a>
+					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;" href="<?=$currentURL.'/?qtxrss=yes'?>">Update RSS Feeds</a>
+						<?php
+						if (isset($_GET['qtxcache'])&&(htmlspecialchars($_GET['qtxcache']=='yes'))) {
+							qtxDownloadsCache_run_cron();
+							echo "<br>success running update downloads cache";
+						}
+						if (isset($_GET['qtxrss'])&&(htmlspecialchars($_GET['qtxrss']=='yes'))) {
+							qtxRSSFetchAllFeeds_run_cron();
+							echo "<br>success running update qtxrss cache";
+						}
+					 	?>
+					<?php endif; ?>
 				</div>
 				<div id="main-posts" class="main-posts">
 				<?php
@@ -159,7 +173,7 @@ $homeURL = home_url();
 				?>
 				</div><!-- #main-posts -->
 				<div id="posts-pagination" class="post-pagination">
-					<?php qtx_navigation(); ?>
+					<?php qtx_navigation(array('query' => $query)); ?>
 				</div>
 				<?php get_template_part( 'template-parts/large-box' ); ?>
 			<?php else: ?>
