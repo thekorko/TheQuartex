@@ -31,8 +31,8 @@ function qtxQueryPostsLanguageCategoriesQuantity ($lang, $cats, $quantity) {
 }
 */
 
-function qtxDownloadsQuery($english, $quantity) {
-  if($english==True) {
+function qtxDownloadsQuery($language, $quantity) {
+  if($language=='en') {
       $cats_query = array( 'descargas', 'downloads', 'downloads-videogames', 'descargas-videojuegos', 'videogames-downloads', 'descargar-videojuegos', 'software-hub' );
       $lang = 'en';
       $new_name = get_template_directory() . '/apps/qtx-cache/cache/front/4-downloads-en'.rand().'.html';
@@ -45,19 +45,28 @@ function qtxDownloadsQuery($english, $quantity) {
   }
   if (is_writable($cache_file)) {
   rename($cache_file, $new_name);
+  } else {
+    if (qtx_is_staff()) {
+      echo "file it's not writable";
+    }
   }
   $fopenCacheFile = fopen($cache_file, "w");
+  if (!$fopenCacheFile) {
+    if (qtx_is_staff()) {
+      echo "file wasn't open";
+    }
+  }
   $post_query_args = array(
   		//we only get roles_query userIDs see above get_users() query
       'post_type' => 'post',
   		'posts_per_page' => $quantity,
+      'lang'     => $lang,
   		//get paged, this is a secured wordpress way of getting pages
   		//tax query to find only posts from the cats_query categories taxonomy
       'tax_query' => array(
           array(
               'taxonomy' => 'category',
               'field'    => 'slug',
-              'lang'     => $lang,
               'terms'    => $cats_query,
   						'include_children' => true,
           ),
@@ -66,8 +75,9 @@ function qtxDownloadsQuery($english, $quantity) {
   	// the query
   	$the_query = new WP_Query($post_query_args);
   	if ($the_query->have_posts()) {
-        $j = 1;
+        $j = 0;
         while ( $the_query->have_posts() ) : $the_query->the_post();
+          $j=$j+1;
           $my_post = get_post();
           //var_dump($my_post);
           $type = "downloads";
@@ -90,20 +100,26 @@ function qtxDownloadsQuery($english, $quantity) {
             fwrite($fopenCacheFile, $open_div);
           }
           //echo($j . $type . $permalink . $title_attrib . $post_title);
-          $post_contents = "<div id='download-".$j."' class='base-box post-".$type."-frontpage'>"."\n"."<a href='".$permalink."' "."title='".$title_attrib."'>"."\n"."<div class='post-title-downloads'>"."\n"."<span><h4 class='post-title-h5'>".$post_title."</h4></span></div><div id='post-thumb-".$j."'class='post-thumb-downloads'>".$post_thumb."\n"."</div></a></div>"."\n";
+          if ($post_title&&$permalink) {
+            $post_contents = "<div id='download-".$j."' class='base-box post-".$type."-frontpage'>"."\n"."<a href='".$permalink."' "."title='".$title_attrib."'>"."\n"."<div class='post-title-downloads'>"."\n"."<span><h4 class='post-title-h5'>".$post_title."</h4></span></div><div id='post-thumb-".$j."'class='post-thumb-downloads'>".$post_thumb."\n"."</div></a></div>"."\n";
+          } else {
+            if (qtx_is_staff()) {
+              echo "post_title was empty";
+            }
+          }
           //echo $post_contents;
           fwrite($fopenCacheFile, $post_contents);
           if(($j==2) or ($j==4)) {
+            //echo "testing";
             $close_div = "</div>";
             fwrite($fopenCacheFile, $close_div);
           }
-          $j=$j+1;
         endwhile;
-        //this is for bug in which 3 posts screw the page
         if ($j==3) {
           $close_div = "</div>";
           fwrite($fopenCacheFile, $close_div);
         }
+        //this is for bug in which 3 posts screw the page
         fclose($fopenCacheFile);
         wp_reset_postdata();
     } else {
@@ -127,6 +143,10 @@ function qtxEchoDownloads() {
   $cache_file = get_template_directory() . '/apps/qtx-cache/cache/front/4-downloads-'.$lang.'.html';
   if (is_writable($cache_file)) {
     require($cache_file);
+  } else {
+    if (qtx_is_staff()) {
+      echo "file wasn't open at echoDownloads";
+    }
   }
 }
 function qtxDownloadsCache_run_cron() {
@@ -135,16 +155,19 @@ function qtxDownloadsCache_run_cron() {
   $quantity = 4;
   //echo $quantity;
   //This function creates an html with data for front-page-php downloads boxes
+  /*
   for ($i=0; $i < 2; $i++) {
     //echo $i;
     if ($i == 0) {
-      $english = True;
     } else {
-      $english = False;
     }
     //echo "Query execution";
-    qtxDownloadsQuery($english, $quantity);
   }
+  */
+  $language = 'en';
+  qtxDownloadsQuery($language, $quantity);
+  $language = 'es';
+  qtxDownloadsQuery($language, $quantity);
 }
 //This function creates a list of dowloands in html format
 //TODO
