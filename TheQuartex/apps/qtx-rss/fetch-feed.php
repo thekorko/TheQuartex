@@ -17,7 +17,60 @@
         	wp_schedule_event( time(), 'Weekly', 'qtxRSSFetchAllFeeds_cron' );
     	}
 		});
+	function qtxRSSupdateOldPosts($updateoldposts = False) {
+		if (qtx_is_staff() && $updateoldposts) {
+			/*Query and fix all posts*/
+			$query_all_extfeeds = array(
+			'post_type' => 'extfeed',
+			'posts_per_page' => '-1',
+			'hide_empty' => 1,
+			'date_query' => array(
+					'before'    => array(
+							'year'  => 2021,
+							'month' => 8,
+							'day'   => 30,
+						),
+						'inclusive' => true,
+				),
+			);
+			$query_all = new WP_Query( $query_all_extfeeds );
+			echo "doing query";
+			if ($query_all->have_posts()) {
+				echo "have posts";
+					$IsAtom = False;
+					$IsRSS = True;
+					$url_force = "https://www.eurogamer.net/?format=rss&type=news";
+					$feedObject = qtx_force_feedUrl($url_force, $IsAtom, $IsRSS);
+					$fetched_source = qtx_fetch_source($feedObject, $url_force, $IsAtom, $IsRSS);
+				while ( $query_all->have_posts() ) : $query_all->the_post();
+					//var_dump($rss);
+					//Ah no soy tan pesimo como yo pensaba esto bien programado
+					$post_id = get_the_ID();
+					echo "Updating $post_id with data:";
+					$srcTitle = $fetched_source['source_title'];
+					$srcDesc = $fetched_source['source_description'];
+					$srcIsAtom = $fetched_source['isatom'];
+					$srcIsRSS = $fetched_source['isrss'];
+					/*
+					this is for the array $taxArray
+					*/
+					$srcFeedXML = $fetched_source['sourcefeedxml'];
+					$srcLink = $fetched_source['source_link'];
+					$feedSRC = $fetched_source['source_title'];
+					$srcDate = $fetched_source['source_date'];
+          $taxArray = array('feed_sources' => $feedSRC, 'source_title' => $srcTitle, 'source_description' => $srcDesc, 'source_date' => $srcDate, 'source_link' => $srcLink, 'sourcefeedxml' => $srcFeedXML, 'isatom' => $srcIsAtom, 'isrss' => $srcIsRSS );
+					var_dump($taxArray);
+					$one_post = array(
+						'ID'        => $post_id,
+						'tax_input' => $taxArray,
+					);
+					wp_update_post($one_post);
+				endwhile;
+			}
+			wp_reset_postdata();
 
+		}
+	}
 	function qtxRSSFetchAllFeeds_run_cron() {
 		echo "<br>inside function";
 		if (qtx_is_staff()) {
@@ -36,7 +89,7 @@
 						/*Query full for array of posts titles*/
 						$arrayOfTitles = array();
 						$post_query_args_rss_full = array(
-						'post_type' => 'extFeed',
+						'post_type' => 'extfeed',
 						'posts_per_page' => 15,
 						'hide_empty' => 1,
 						'tax_query' => array(
@@ -59,7 +112,7 @@
 						$full = True;
 
 						$post_query_args_rss = array(
-						'post_type' => 'extFeed',
+						'post_type' => 'extfeed',
 						'posts_per_page' => 1,
 						'hide_empty' => 1,
 						'tax_query' => array(
