@@ -4,7 +4,7 @@
 * Setup Cron Jobs
 *
 */
-/*
+
 	function qtxRSSFetchAllFeeds_deactivate() {
     	wp_clear_scheduled_hook( 'qtxDownloadsCache_cron' );
 		}
@@ -14,7 +14,7 @@
     	register_deactivation_hook( __FILE__, 'qtxRSSFetchAllFeeds_deactivate' );
 
     	if (! wp_next_scheduled ( 'qtxRSSFetchAllFeeds_cron' )) {
-        	wp_schedule_event( time(), 'Daily', 'qtxRSSFetchAllFeeds_cron' );
+        	wp_schedule_event( time(), 'Weekly', 'qtxRSSFetchAllFeeds_cron' );
     	}
 		});
 	function qtxRSSFetchAllFeeds_run_cron() {
@@ -22,15 +22,6 @@
 			//obtener el ultimo post y sus taxonomies
 			$allFeeds = get_terms('sourceFeedXML');
 			if (!empty($allFeeds)) {
-<<<<<<< Updated upstream
-				$arrayOfFeeds = array();
-				foreach ($variable as $key => $value) {
-					array_push($arrayOfFeeds, $AllFeeds[0]->name);
-				}
-			}
-			//Crear un array con un unico feed o con todos los feeds existentes
-			qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle);
-=======
 				if ($isatom or $isrss) {
 					$language = 'en';
 					$category = array(8);
@@ -66,11 +57,8 @@
 					echo "The has not been set a proper Format like atom or rss";
 				}
 			}
-
->>>>>>> Stashed changes
 		}
 	}
-	*/
 	//fetches source information and returns an array
 	function qtx_fetch_source($feedObject, $url_force, $isatom, $isrss) {
 		//Array declaration is fine this way if you need a valid empty array just $var = array()
