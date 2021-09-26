@@ -98,7 +98,10 @@ function qtxrss_registerSourceTaxonomies() {
     *
     *
     */
-
+    $labels = array(
+        'name'              => _x( 'isatom', 'taxonomy general name', 'textdomain' ),
+        'singular_name'     => _x( 'isatom', 'taxonomy singular name', 'textdomain' ),
+    );
     $args = array(
         'hierarchical'      => false,
         'labels'            => $labels,
@@ -107,6 +110,10 @@ function qtxrss_registerSourceTaxonomies() {
         'query_var'         => true,
     );
     register_taxonomy( 'isatom', array( 'extfeed' ), $args );
+    $labels = array(
+        'name'              => _x( 'isrss', 'taxonomy general name', 'textdomain' ),
+        'singular_name'     => _x( 'isrss', 'taxonomy singular name', 'textdomain' ),
+    );
     $args = array(
         'hierarchical'      => false,
         'labels'            => $labels,
@@ -115,7 +122,10 @@ function qtxrss_registerSourceTaxonomies() {
         'query_var'         => true,
     );
     register_taxonomy( 'isrss', array( 'extfeed' ), $args );
-    
+    $labels = array(
+        'name'              => _x( 'Source XML link', 'taxonomy general name', 'textdomain' ),
+        'singular_name'     => _x( 'Sources XML link', 'taxonomy singular name', 'textdomain' ),
+    );
     $args = array(
         'hierarchical'      => false,
         'labels'            => $labels,
@@ -123,7 +133,7 @@ function qtxrss_registerSourceTaxonomies() {
         'show_admin_column' => false,
         'query_var'         => true,
     );
-    register_taxonomy( 'sourceFeedXML', array( 'extfeed' ), $args );
+    register_taxonomy( 'sourcefeedxml', array( 'extfeed' ), $args );
 
 }
 add_action( 'init', 'qtxrss_registerSourceTaxonomies', 0 );
@@ -144,7 +154,7 @@ function qtx_post_type_extfeed() {
             'show_in_rest' => true,
 						'supports' => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', /*'comments',*/'revisions', 'custom-fields', ),
 		        // You can associate this CPT with a taxonomy or custom taxonomy.
-		        'taxonomies' => array( 'source_link', 'source_date', 'source_title', 'source_description', 'original_date', 'feed_sources', 'category', 'post_tag',  ),
+		        'taxonomies' => array( 'source_link', 'source_date', 'source_title', 'source_description', 'original_date', 'feed_sources', 'category', 'post_tag', 'sourcefeedxml', 'isatom', 'isrss'  ),
             //Taxonomies from fetched source we need to create them
         )
     );

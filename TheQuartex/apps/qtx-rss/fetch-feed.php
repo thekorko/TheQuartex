@@ -17,48 +17,101 @@
         	wp_schedule_event( time(), 'Weekly', 'qtxRSSFetchAllFeeds_cron' );
     	}
 		});
+
 	function qtxRSSFetchAllFeeds_run_cron() {
+		echo "<br>inside function";
 		if (qtx_is_staff()) {
 			//obtener el ultimo post y sus taxonomies
-			$allFeeds = get_terms('sourceFeedXML');
+			$allFeeds = get_terms(array('taxonomy' => 'sourcefeedxml', 'hide_empty' => false,));
+			//var_dump($allFeeds);
 			if (!empty($allFeeds)) {
-				if ($isatom or $isrss) {
+				echo "<br>allFeeds was not empty";
 					$language = 'en';
 					$category = array(8);
 					foreach ($allFeeds as $term) {
-						$args = array(
-						'post_type' => 'extfeed',
-						'posts_per_page' => 1,
-						'orderby' => 'date',
-						'order'   => 'DESC',
+						echo "<br>executed foreach $term->name";
+						$feedUrl = $term->slug;
+						echo "<br>$feedUrl";
+
+						/*Query full for array of posts titles*/
+						$arrayOfTitles = array();
+						$post_query_args_rss_full = array(
+						'post_type' => 'extFeed',
+						'posts_per_page' => 15,
+						'hide_empty' => 1,
 						'tax_query' => array(
 								array(
-										'taxonomy' => 'sourceFeedXML',
-										'field'    => 'name',
-										'terms'    => $term->name,
+										'taxonomy' => 'sourcefeedxml',
+										'field'    => 'slug',
+										'terms'    => $term->slug,
 									),
-							),
+								),
 						);
-						$new_query = new WP_Query( $args );
-						if ( $new_query->have_posts() ) {
-							$arrayOfFeeds = array($term->name);
-							/*foreach ($allFeeds as $key => $value) {
-								array_push($arrayOfFeeds, $allFeeds[0]->name);
-							}*/
-							var_dump($new_query);
-							$lastPostTitle = "test";
-							//Crear un array con un unico feed o con todos los feeds existentes
-							qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle);
-							wp_reset_postdata();
+						$query_full = new WP_Query( $post_query_args_rss_full );
+						if ($query_full->have_posts()) {
+							while ( $query_full->have_posts() ) : $query_full->the_post();
+								$PostTitle = get_the_title();
+								array_push($arrayOfTitles, $PostTitle);
+							endwhile;
+						}
+						wp_reset_postdata();
+						/*Query full for array of posts titles*/
+						$full = True;
+
+						$post_query_args_rss = array(
+						'post_type' => 'extFeed',
+						'posts_per_page' => 1,
+						'hide_empty' => 1,
+						'tax_query' => array(
+								array(
+										'taxonomy' => 'sourcefeedxml',
+										'field'    => 'slug',
+										'terms'    => $term->slug,
+									),
+								),
+						);
+						//echo "<br>tax query done";
+						$new_query_rss = new WP_Query( $post_query_args_rss );
+						//var_dump($new_query);
+						if ( $new_query_rss->have_posts() ) {
+							while ( $new_query_rss->have_posts() ) : $new_query_rss->the_post();
+								$post_id = get_the_ID();
+								echo $post_id;
+								$isatom = qtxrss_recursiveTermsName($post_id, 'isatom', 'slug');
+								$isrss = qtxrss_recursiveTermsName($post_id, 'isrss', 'slug');
+								echo "we are in the query";
+								if (empty($isrss)) {
+									$isrss = 0;
+									echo "<br>isrss was empty";
+								}
+								if (empty($isatom)) {
+									$isatom = 0;
+									echo "<br>isatom was empty";
+								}
+								if ($isatom == 1 or $isrss == 1) {
+									echo "the feed isatom or isrss";
+									echo "the query had posts";
+									$arrayOfFeeds = array($term->name);
+									/*foreach ($allFeeds as $key => $value) {
+										array_push($arrayOfFeeds, $allFeeds[0]->name);
+									}*/
+									//var_dump($new_query_rss);
+									$lastPostTitle = get_the_title();
+									echo "<br>$lastPostTitle<br>";
+									//Crear un array con un unico feed o con todos los feeds existentes
+									qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle, $arrayOfTitles, $full);
+									wp_reset_postdata();
+								} else {
+									echo "The has not been set a proper Format like atom or rss";
+								}
+								endwhile;
 						}
 					}
 					//qtxrss_execMastermode();
-				} else {
-					echo "The has not been set a proper Format like atom or rss";
-				}
 			}
 		}
 	}
+
 	//fetches source information and returns an array
 	function qtx_fetch_source($feedObject, $url_force, $isatom, $isrss) {
 		//Array declaration is fine this way if you need a valid empty array just $var = array()
@@ -68,7 +121,7 @@
 		$fetched_source = array(
 			'isatom' => $isatom,
 			'isrss' => $isrss,
-			'sourceFeedXML' => $url_force,
+			'sourcefeedxml' => $url_force,
 			'source_title' => $source_title = htmlSpecialChars($feedObject->title), //Website title
 			'source_description' => $source_description = htmlSpecialChars($feedObject->description), //Website description
 			//'owned' => $source_owned_tag => "Korkunç", //fun
@@ -81,15 +134,15 @@
 
 	//$qtx_post_array = array($title,$description,$content,$link,$author_name); //This creates an array with array[0] Null
 	//$qtx_feed_array = array(); //array of fetched feed posts //This creates an empty array
-
 	//fetches a feed for posts
-	function qtx_fetch_feed($feedObject, $isatom, $isrss, $lastPostTitle = "") {
+	function qtx_fetch_feed($feedObject, $isatom, $isrss, $lastPostTitle = "", $arrayOfTitles = array(), $full = False) {
 		//we create an empty array otherwise array_push() will output: expected array on parameter 1
 		$qtx_feed_array = array();
 		//For each item in the rss feed object we check item data and store in an array
 		$checkPostTitle = False;
 		if (!empty($lastPostTitle)) {
 			$checkPostTitle = True;
+			echo "<br>check post title is true";
 		}
 		if ($isatom) {
 			foreach ($feedObject->entry as $entry):
@@ -100,9 +153,16 @@
 						}
 						$postTitle = htmlSpecialChars($entry->title);
 						if ($checkPostTitle) {
+							if ($full && !empty($arrayOfTitles)) {
+								echo "<br>checking haystack of titles";
+								if (in_array($postTitle, $arrayOfTitles)) {
+									echo "Found in haystack<br>$lastPostTitle";
+									return;
+								};
+							}
 							if ($postTitle == $lastPostTitle) {
-								echo "source fetched until last post title: atom";
-								break;
+								echo "source fetched until last post title: atom <br>$lastPostTitle";
+								return;
 							}
 						}
 						//Individual post/item array (we will store it in an array of posts array)
@@ -123,9 +183,16 @@
 			foreach ($feedObject->item as $item):
 						$postTitle = htmlSpecialChars($item->title);
 						if ($checkPostTitle) {
+							if ($full && !empty($arrayOfTitles)) {
+								echo "<br>checking haystack of titles";
+								if (in_array($postTitle, $arrayOfTitles)) {
+									echo "<br>Found in haystack<br>$lastPostTitle";
+									return;
+								};
+							}
 							if ($postTitle == $lastPostTitle) {
-								echo "source fetched until last post title: rss";
-								break;
+								echo "<br>source fetched until last post title: rss<br>title was:$lastPostTitle<br>";
+								return;
 							}
 						}
 						//Individual post/item array (we will store it in an array of posts array)

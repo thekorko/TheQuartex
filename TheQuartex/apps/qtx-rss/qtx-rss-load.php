@@ -26,6 +26,9 @@ if (class_exists('Feed', false)) {
         switch ($objectKey) {
           case 'name':
             //echo $term->slug;
+            if (empty($term->name)) {
+              return "null";
+            }
             return $term->name;
           case 'id':
             //echo $term->slug;
@@ -176,7 +179,11 @@ if (class_exists('Feed', false)) {
       } else {
         //echo "<br>".$imageURL['src'];
         //We return just one link string
-        return $imageURL['src'];
+        if (!empty($imageURL['src'])) {
+          return $imageURL['src'];
+        } else {
+          return "";
+        }
         //echo $imageURL['src'];
       }
     }
@@ -202,12 +209,16 @@ if (class_exists('Feed', false)) {
           //echo "<br>" . "we are inserting";
 
           //we have an indexted array of ARRAY_A values. so for each of them we operate
+          if (empty($qtx_feed_array)) {
+            echo "<br>feed_array empty<br>";
+            return;
+          }
           for ($i=0; $i < count($qtx_feed_array); $i++) {
             //var_dump($qtx_feed_array[$i]);
             $tags = qtx_createTagsArray($qtx_feed_array[$i]['description']);
             //echo "<br>" . $i;
             //echo "<br>" .($qtx_feed_array[$i]['description']); //success
-            if (!$update) {
+            if ($update) {
               if (qtx_is_staff()) {
                 echo "Source data will be updated";
               }
@@ -223,16 +234,16 @@ if (class_exists('Feed', false)) {
             /*
             this is for the array $taxArray
             */
-            $srcFeedXML = $fetched_source['sourceFeedXML'];
+            $srcFeedXML = $fetched_source['sourcefeedxml'];
             $srcOrigDate = $qtx_feed_array[$i]['original_date'];
             $srcLink = $fetched_source['source_link'];
             $feedSRC = $fetched_source['source_title'];
             $srcDate = $fetched_source['source_date'];
             //Array for tax_input
             if (!$update) {
-              $taxArray = array('feed_sources' => $feedSRC, 'source_title' => $srcTitle, 'source_description' => $srcDesc, 'source_date' => $srcDate, 'original_date' => $srcOrigDate, 'source_link' => $srcLink, 'sourceFeedXML' => $srcFeedXML, 'isatom' => $srcIsAtom, 'isrss' => $srcIsRSS );
+              $taxArray = array('feed_sources' => $feedSRC, 'source_title' => $srcTitle, 'source_description' => $srcDesc, 'source_date' => $srcDate, 'original_date' => $srcOrigDate, 'source_link' => $srcLink, 'sourcefeedxml' => $srcFeedXML, 'isatom' => $srcIsAtom, 'isrss' => $srcIsRSS );
             } else {
-              $taxArray = array('feed_sources' => $feedSRC, 'source_title' => $srcTitle, 'source_description' => $srcDesc, 'source_date' => $srcDate, 'original_date' => $srcOrigDate, 'source_link' => $srcLink, 'sourceFeedXML' => $srcFeedXML, 'isatom' => $srcIsAtom, 'isrss' => $srcIsRSS );
+              $taxArray = array('feed_sources' => $feedSRC, 'source_title' => $srcTitle, 'source_description' => $srcDesc, 'source_date' => $srcDate, 'original_date' => $srcOrigDate, 'source_link' => $srcLink, 'sourcefeedxml' => $srcFeedXML, 'isatom' => $srcIsAtom, 'isrss' => $srcIsRSS );
             }
             //Simple concatenation
             $postStatus = 'publish';
@@ -260,6 +271,7 @@ if (class_exists('Feed', false)) {
               $imageHTML = "<img src='$imageURL' class='post-thumb'><br>";
               $postContentParsed = $imageHTML . $strPostContentParsed;
             } else {
+              $isImageDefault = False;
               $postContentParsed = $strPostContentParsed;
             }
             //$imageHTML = "<img src='$imageURL' class='post-thumb'><br>";
@@ -332,7 +344,7 @@ if (class_exists('Feed', false)) {
       //endfor;
     }
 
-    function qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle = "") {
+    function qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle = "", $arrayOfTitles = array(), $full = False) {
       $mastermode = True;
       if ($mastermode) {
         //$rss = qtx_current_feed(); //get current feed we are working
@@ -366,7 +378,18 @@ if (class_exists('Feed', false)) {
               $fetched_source = qtx_fetch_source($feedObject, $url_force, $isatom, $isrss); //Load return value to a variable
               //var_dump($fetched_source); //dump
               //echo "<br>" . "<br><br><br>";
-              $qtx_feed_array = qtx_fetch_feed($feedObject, $isatom, $isrss, $lastPostTitle); //Load return value to a variable
+              $dates_db = get_terms(array('taxonomy' => 'source_date', 'hide_empty' => false,));
+              //var_dump($dates_db);
+              foreach ($dates_db as $term) {
+                echo "$term->name<br>";
+                echo "<br>".$fetched_source['source_date'];
+                if (similar_text($fetched_source['source_date'],$term->name)) {
+                  echo "The date ".$fetched_source['source_date']."was found in the database, so no running update";
+                  return;
+                }
+              }
+              echo "<br>Still here";
+              $qtx_feed_array = qtx_fetch_feed($feedObject, $isatom, $isrss, $lastPostTitle, $arrayOfTitles, $full); //Load return value to a variable
               //var_dump($qtx_feed_array);
               //echo "we are about to insert";
               //var_dump($category);
