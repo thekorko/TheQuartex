@@ -194,7 +194,7 @@ if (class_exists('Feed', false)) {
     }
     */
     //handle wp_post insertion, we pass it a feed array consisting of individual posts ARRAY_A
-    function qtx_rss_insert($fetched_source, $qtx_feed_array, $language, $category, $update = False;) {
+    function qtx_rss_insert($fetched_source, $qtx_feed_array, $language, $category, $update = False) {
       $user_name = "QTXFeedsBOT";
       //We get the id for our username, this will be the one who posts
       $user_id = username_exists( $user_name );
@@ -339,25 +339,6 @@ if (class_exists('Feed', false)) {
         //$rss_url_force = 'http://localhost/rss-php/rss_euro';
         //$arrayOfFeeds = qtx_get_arrayOfFeeds();
         for ($i=0; $i < count($arrayOfFeeds); $i++) {
-<<<<<<< Updated upstream
-          $url_force = $arrayOfFeeds[$i];
-          //echo "<br>" . $url_force;
-          $feedObject = qtx_force_feedUrl($url_force, $isatom, $isrss);
-          //var_dump($rss);
-
-          //Ah no soy tan pesimo como yo pensaba esto bien programado
-          $fetched_source = qtx_fetch_source($feedObject, $url_force, $isatom, $isrss); //Load return value to a variable
-          //var_dump($fetched_source); //dump
-          //echo "<br>" . "<br><br><br>";
-
-          $qtx_feed_array = qtx_fetch_feed($feedObject, $isatom, $isrss, $lastPostTitle); //Load return value to a variable
-          //var_dump($qtx_feed_array);
-          //echo "we are about to insert";
-          //var_dump($category);
-          qtx_rss_insert($fetched_source, $qtx_feed_array, $language, $category);
-          //echo "<br>" . "hola";
-          //print_r($qtx_feed_array);
-=======
           if ($isatom or $isrss) {
             if ($lastPostTitle == "") {
               $url_force = $arrayOfFeeds[$i];
@@ -397,7 +378,6 @@ if (class_exists('Feed', false)) {
           } else {
             echo "error this feed was not properly handled";
           }
->>>>>>> Stashed changes
         }
       }
     }
