@@ -33,12 +33,12 @@ function qtxQueryPostsLanguageCategoriesQuantity ($lang, $cats, $quantity) {
 
 function qtxDownloadsQuery($language, $quantity) {
   if($language=='en') {
-      $cats_query = array( 'descargas', 'downloads', 'downloads-videogames', 'descargas-videojuegos', 'videogames-downloads', 'descargar-videojuegos', 'software-hub' );
+      $cats_query = array( 'descargas', 'downloads', 'downloads-videogames', 'descargas-videojuegos', 'videogames-downloads', 'descargar-videojuegos', 'software-hub', 'centro-de-software' );
       $lang = 'en';
       $new_name = get_template_directory() . '/apps/qtx-cache/cache/front/4-downloads-en'.rand().'.html';
       $cache_file = get_template_directory() . '/apps/qtx-cache/cache/front/4-downloads-en.html';
   } else {
-      $cats_query = array( 'descargas', 'downloads', 'downloads-videogames', 'descargas-videojuegos', 'videogames-downloads', 'descargar-videojuegos', 'software-hub' );
+      $cats_query = array( 'descargas', 'downloads', 'downloads-videogames', 'descargas-videojuegos', 'videogames-downloads', 'descargar-videojuegos', 'software-hub', 'centro-de-software' );
       $lang = 'es';
       $cache_file = get_template_directory() . '/apps/qtx-cache/cache/front/4-downloads-es.html';
       $new_name = get_template_directory() . '/apps/qtx-cache/cache/front/4-downloads-es'.rand().'.html';

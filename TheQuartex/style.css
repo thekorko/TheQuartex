@@ -566,7 +566,7 @@ p {
 /*(hacer que aparezca por encima de todo lo demas como en youtube u otra solucion bonita :))*/
 /*.item1 { grid-area: header; }*/
 .sidebar {
-  width: 290px;
+  width: 310px;
   grid-area: menu;
   position: -webkit-sticky;
   position: sticky;

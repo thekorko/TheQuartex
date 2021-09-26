@@ -26,7 +26,7 @@ get_header();
 //categories
 //pre arguments
 //TODO make this modificable with dashboard options
-$cats_query = array( 'descargas', 'downloads' );
+$cats_query = array( 'descargas', 'downloads', 'downloads-videogames', 'descargas-videojuegos', 'videogames-downloads', 'descargar-videojuegos', 'software-hub', 'centro-de-software' );
 
 //get_query _var( 'paged' ) - this function basically look for a GET variable in the URL, '?paged=X'
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -36,7 +36,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $post_query_args = array(
 		//we only get roles_query userIDs see above get_users() query
     'post_type' => 'post',
-		'posts_per_page' => 10,
+		'posts_per_page' => 15,
 		//get paged, this is a secured wordpress way of getting pages
 		'paged' => $paged,
 		//tax query to find only posts from the cats_query categories taxonomy
