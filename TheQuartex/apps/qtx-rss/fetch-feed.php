@@ -22,6 +22,7 @@
 			//obtener el ultimo post y sus taxonomies
 			$allFeeds = get_terms('sourceFeedXML');
 			if (!empty($allFeeds)) {
+<<<<<<< Updated upstream
 				$arrayOfFeeds = array();
 				foreach ($variable as $key => $value) {
 					array_push($arrayOfFeeds, $AllFeeds[0]->name);
@@ -29,6 +30,44 @@
 			}
 			//Crear un array con un unico feed o con todos los feeds existentes
 			qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle);
+=======
+				if ($isatom or $isrss) {
+					$language = 'en';
+					$category = array(8);
+					foreach ($allFeeds as $term) {
+						$args = array(
+						'post_type' => 'extfeed',
+						'posts_per_page' => 1,
+						'orderby' => 'date',
+						'order'   => 'DESC',
+						'tax_query' => array(
+								array(
+										'taxonomy' => 'sourceFeedXML',
+										'field'    => 'name',
+										'terms'    => $term->name,
+									),
+							),
+						);
+						$new_query = new WP_Query( $args );
+						if ( $new_query->have_posts() ) {
+							$arrayOfFeeds = array($term->name);
+							/*foreach ($allFeeds as $key => $value) {
+								array_push($arrayOfFeeds, $allFeeds[0]->name);
+							}*/
+							var_dump($new_query);
+							$lastPostTitle = "test";
+							//Crear un array con un unico feed o con todos los feeds existentes
+							qtx_feed_handle($arrayOfFeeds, $isatom, $isrss, $language, $category, $lastPostTitle);
+							wp_reset_postdata();
+						}
+					}
+					//qtxrss_execMastermode();
+				} else {
+					echo "The has not been set a proper Format like atom or rss";
+				}
+			}
+
+>>>>>>> Stashed changes
 		}
 	}
 	*/
@@ -37,7 +76,7 @@
 		//Array declaration is fine this way if you need a valid empty array just $var = array()
 		//Ah no soy TAN PESIMO como yo pensaba esto bien programado
 		//Si esto lo tengo que fetchear una vez nomas
-		$feed_type =
+		//$feed_type =
 		$fetched_source = array(
 			'isatom' => $isatom,
 			'isrss' => $isrss,
@@ -74,7 +113,7 @@
 						$postTitle = htmlSpecialChars($entry->title);
 						if ($checkPostTitle) {
 							if ($postTitle == $lastPostTitle) {
-								echo "source fetched";
+								echo "source fetched until last post title: atom";
 								break;
 							}
 						}
@@ -97,7 +136,7 @@
 						$postTitle = htmlSpecialChars($item->title);
 						if ($checkPostTitle) {
 							if ($postTitle == $lastPostTitle) {
-								echo "source fetched";
+								echo "source fetched until last post title: rss";
 								break;
 							}
 						}
