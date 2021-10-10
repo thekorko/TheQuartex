@@ -1,0 +1,5 @@
+Bugs quartex.net:
+last pages doesn't work(Doesn't load properlly)
+lazyload images are low quality *Temporally disabled
+posts aren't centered doesn't work *Temporally disabled
+add [center] tag for users
