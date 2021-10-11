@@ -2001,8 +2001,6 @@ object {
   border-color: #202020;
 }
 .entry-content {
-  display: grid;
-  justify-items: center;
   border: 2px solid;
 	border-color: #dcdcdc;
 	/*background: #dedede;*/
