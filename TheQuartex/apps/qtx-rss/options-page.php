@@ -1,5 +1,7 @@
 <?php
-
+if(!defined('LoadOptions')) {
+    die('Options not loaded');
+}
 //admin registering/core functionality
 /*
 ********* ADMIN_INIT settings registering

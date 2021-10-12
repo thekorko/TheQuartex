@@ -15,6 +15,7 @@ if (class_exists('Feed', false)) {
   $ispluginenabled = True;
   //load custom post if custompost is set to true
   if ($ispluginenabled) {
+    define('LoadFunctions', TRUE);
     require get_template_directory() . '/apps/qtx-rss/custom-post.php';
   }
 
@@ -112,16 +113,20 @@ if (class_exists('Feed', false)) {
     //echo "<br>" . "<br>" . get_template_directory() . "<br>";
 
     //load load frontend functions, sanitization, form output TODO
+    define('LoadFrontend', TRUE);
     require get_template_directory() . '/apps/qtx-rss/frontend.php';
 
     //load options page TODO
+    //define('LoadOptions', TRUE);
     //require get_template_directory() . '/apps/qtx-rss/options-page.php';
 
     //plugin initialization
     //load feed profiles functions qtx_current_feed()
+    define('LoadProfiles', TRUE);
     require get_template_directory() . '/apps/qtx-rss/feed-profiles.php';
 
     //Load fetching functions qtx_fetch_source() and qtx_fetch_feed()
+    define('LoadFetching', TRUE);
     require get_template_directory() . '/apps/qtx-rss/fetch-feed.php';
 
 
@@ -409,7 +414,8 @@ if (class_exists('Feed', false)) {
       //echo "we are in mastermode";
       //var_dump($category);
       //load filepaths, and other config
-      require(get_template_directory() . '/apps/qtx-rss/mastermode/config.php');
+      define('LoadConfig', TRUE);
+      require(get_template_directory() . '/apps/qtx-rss/config.php');
       $first_step = True;
       while (True) {
         if ($first_step) {
@@ -522,6 +528,9 @@ if (class_exists('Feed', false)) {
   }
 } else {
   //Error
+  if(!defined('QTXRSS')) {
+     die('Undefined');
+  }
   echo "<br>" . "You are trying to load qtx-rss (Template/Plugins folder) without first loading <br> RSS & Atom Feeds for PHP <br> version 1.2";
   echo "<br>" . "<br>";
   echo "<br>" . "https://github.com/dg/rss-php/releases";

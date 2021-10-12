@@ -1,4 +1,7 @@
 <?php
+if(!defined('LoadProfiles')) {
+    die('Profiles');
+}
 $mastermode = True;
 //echo "<br>" . "mastermode is" . $mastermode . "in feed-profiles.php" . "<br>";
 if ($mastermode && qtx_is_staff()) {

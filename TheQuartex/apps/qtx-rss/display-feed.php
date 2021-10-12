@@ -1,4 +1,9 @@
-<?php function display_feed_default($rss_feedObject) { ?>
+
+<?php
+if(!defined('LoadFunctions')) {
+    die('Display');
+}
+function display_feed_default($rss_feedObject) { ?>
 
 <h1><?php echo htmlSpecialChars($rss_feedObject->title) ?></h1>
 

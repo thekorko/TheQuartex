@@ -1,4 +1,7 @@
 <?php
+if(!defined('LoadFrontend')) {
+    die('Frontend');
+}
 function qtxrss_echoForm($url) { ?>
 <form action="<?php echo($url); ?>" method="post">
   <p><label for="feed-type">Choose a type of feed(rss or atom):</label></p>
@@ -22,7 +25,8 @@ function qtxrss_formSanitize($type_ofFeed, $dirty_variable) {
      $clean_variable = $dirty_variable . "\n";
      if($clean) {
        //load config variables for filepaths
-       require get_template_directory() . '/apps/qtx-rss/mastermode/config.php';
+       define('LoadConfig', TRUE);
+       require get_template_directory() . '/apps/qtx-rss/config.php';
       /*What kind of feed are we handling*/
        if ($type_ofFeed == "rss") {
          $any_filepath = $rss_filepath;
@@ -59,7 +63,8 @@ function qtxrss_execFrontForm() {
 
 function qtxrss_printFeeds() {
   echo "<br><h2>Print Feeds Lists</h2>";
-  require(get_template_directory() . '/apps/qtx-rss/mastermode/config.php');
+  define('LoadConfig', TRUE);
+  require(get_template_directory() . '/apps/qtx-rss/config.php');
   $file = file_get_contents($rss_filepath, true);
     echo "<br><h3>RSS FEEDS:</h3><br>$file";
   $file = file_get_contents($atom_filepath, true);
@@ -67,7 +72,7 @@ function qtxrss_printFeeds() {
 }
 function qtxrss_resetFile() {
   echo "<br><h2>Reset Files</h2>";
-  require(get_template_directory() . '/apps/qtx-rss/mastermode/config.php');
+  require(get_template_directory() . '/apps/qtx-rss/config.php');
   global $wp;
   $url = home_url( $wp->request ); //get current url
   if (isset($_POST['deleteRSS'])) {

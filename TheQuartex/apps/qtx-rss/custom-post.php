@@ -4,6 +4,9 @@
  *
  * @see register_post_type() for registering custom post types.
  */
+if(!defined('LoadFunctions')) {
+    die('Custom');
+}
 function qtxrss_registerSourceTaxonomies() {
     // Add new taxonomy, make non-hierarchical like tags
     $labels = array(

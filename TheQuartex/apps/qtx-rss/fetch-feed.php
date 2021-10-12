@@ -4,7 +4,9 @@
 * Setup Cron Jobs
 *
 */
-
+if(!defined('LoadFetching')) {
+    die('Processing disabled');
+}
 	function qtxRSSFetchAllFeeds_deactivate() {
     	wp_clear_scheduled_hook( 'qtxDownloadsCache_cron' );
 		}

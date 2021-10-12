@@ -37,6 +37,7 @@ if (is_file($simple_html_dom_load)) {
 /**
 * Load qtx-rss plugin/app
 */
+define('QTXRSS', True);
 $qtx_rss_load = get_template_directory() . '/apps/qtx-rss/qtx-rss-load.php';
 if (is_file($qtx_rss_load)) {
 	require $qtx_rss_load;

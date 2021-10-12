@@ -1,4 +1,7 @@
 <?php
+if(!defined('LoadConfig')) {
+   die('Config not loaded');
+}
 $rss_filepath = get_template_directory() . '/apps/qtx-rss/mastermode/rss.txt';
 $rss_feeds = file($rss_filepath, FILE_IGNORE_NEW_LINES);
 //var_dump($rss_feeds);
