@@ -274,10 +274,21 @@ if (class_exists('Feed', false)) {
               //workaraund for dupe image bug
               $isImageDefault = True;
               $imageHTML = "<img src='$imageURL' class='post-thumb'><br>";
-              $postContentParsed = $imageHTML . $strPostContentParsed;
+
+              if ($feedSRC == 'PiviGames') {
+                $postContentParsed = $auxPostContentParsed;
+              } else {
+                $postContentParsed = $imageHTML . $strPostContentParsed;
+              }
             } else {
-              $isImageDefault = False;
-              $postContentParsed = $strPostContentParsed;
+              if ($feedSRC == 'PiviGames') {
+                $isImageDefault = False;
+                $postContentParsed = $auxPostContentParsed;
+              } else {
+                $isImageDefault = False;
+                $postContentParsed = $strPostContentParsed;
+              }
+
             }
             //$imageHTML = "<img src='$imageURL' class='post-thumb'><br>";
             //$postContentParsed = $stringprepostContentParsed;
@@ -414,7 +425,9 @@ if (class_exists('Feed', false)) {
       //echo "we are in mastermode";
       //var_dump($category);
       //load filepaths, and other config
-      define('LoadConfig', TRUE);
+      if(!defined('LoadConfig')) {
+        define('LoadConfig', TRUE);
+      }
       require(get_template_directory() . '/apps/qtx-rss/config.php');
       $first_step = True;
       while (True) {
