@@ -5,7 +5,7 @@
 *
 */
 if(!defined('LoadFetching')) {
-    die('Processing disabled');
+    die('Fetch');
 }
 	function qtxRSSFetchAllFeeds_deactivate() {
     	wp_clear_scheduled_hook( 'qtxDownloadsCache_cron' );

@@ -1023,6 +1023,7 @@ require get_template_directory() . '/inc/customizer.php';
 /**
 * Plugin loader else load compatibility
 */
+define('QTXLoader', True);
 $qtx_plugin_loader = get_template_directory() . '/apps/qtx-plugin-loader.php';
 if (is_file($qtx_plugin_loader)) {
 	require $qtx_plugin_loader;

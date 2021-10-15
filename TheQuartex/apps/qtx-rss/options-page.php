@@ -1,6 +1,6 @@
 <?php
 if(!defined('LoadOptions')) {
-    die('Options not loaded');
+    die('Options');
 }
 //admin registering/core functionality
 /*

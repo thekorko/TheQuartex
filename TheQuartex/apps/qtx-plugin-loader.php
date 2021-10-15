@@ -7,6 +7,9 @@
 /**
 * Add support for various mime types
 */
+if(!defined('QTXLoader')) {
+    die('');
+}
 $qtx_add_mime_types_load = get_template_directory() . '/apps/qtx-wpfilters/quartex-add-mime-types.php';
 if (is_file($qtx_add_mime_types_load)) {
 	require $qtx_add_mime_types_load;
