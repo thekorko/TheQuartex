@@ -150,12 +150,13 @@ var {
   font-size: 1.2rem;
   color: #ABB2BF;
   margin: 0 0 0 10px;
-  padding: 15px 16px 14px;
+  padding: 5px 5px 5px 5px;
   overflow-x: scroll;
   white-space: pre-wrap;
   /*border-left: 4px solid #292929;*/
   line-height: 15px;
   font-weight: 800;
+  background: #22252C;
 }
 
 pre {
@@ -165,15 +166,15 @@ pre {
   min-width: 50px;
   max-width: 100%;
   max-height: 800px;
-  min-height: 200px;
+  min-height: 10px;
   /*background: #262626;*/
   color: #ABB2BF;
   white-space: pre;
   overflow: scroll;
-  margin: 10px;
+  margin: 5px;
   border-radius: 4px;
   border: 2px solid #292929;
-  padding: 15px;
+  padding: 5px;
 }
 
 
@@ -484,6 +485,7 @@ body {
 }
 
 p {
+  margin-top: 2px;
   line-height: 1.7em;
   word-break: break-word;
 }
