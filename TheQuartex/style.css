@@ -1582,7 +1582,9 @@ object {
 }
 
 .site-background {
-  background: #9391e2;
+  background-color: #9391e2;
+  background-image: linear-gradient(90deg, rgba(101,0,158,0.52) 0%, rgba(141,0,150,0.32) 35%, rgba(40,0,110,0.73) 100%),url("img/background.png");
+  background-attachment: fixed;
 }
 .sidebar1 {
   background: #005766;
@@ -2099,76 +2101,6 @@ object {
 #single-post-container {
   background: #e7e7e7;
 }
-@keyframes fade {
-  from {
-    transform: translateX(-150px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@media only screen and (min-width: 770px) {
-  #menu-button {
-    display: none !important;
-  }
-}
-
-@media only screen and (max-width: 770px) {
-  .large-box {
-    margin: 0 0.5em 0 0.5em !important;
-    padding: 0.5em !important;
-  }
-  .attention-box {
-    margin: 0 0.5em 0 0.5em !important;
-    padding: 0.5em !important;
-  }
-  .post-pagination {
-    margin-top: 0.5em !important;
-    margin-bottom: 0.5em !important;
-  }
-  #content-and-comments {
-    margin: 0.5em 0.2em 0.5em 0.2em !important;
-    padding: 0.5em !important;
-  }
-  .main-posts {
-    margin: 0 0.5em 0 0.5em !important;
-    padding: 0.5em !important;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  }
-  .sidebar {
-    display: none;
-    position: absolute;
-    z-index: 10;
-    width: 100%;
-    margin: 0 !important;
-    animation: fade ease 400ms forwards;
-  }
-
-  .primary {
-    grid-template-columns: 1fr;
-    padding: 0;
-    margin: 10px 0;
-  }
-
-  #single-page {
-    margin: 0 !important;
-  }
-
-  .posts-archive {
-    margin: 0 !important;
-    padding: 2em 1em;
-    place-items: center;
-  }
-
-  .entry-content img {
-    margin: 0;
-    width: 100%;
-    max-width: unset;
-  }
-}
 /*
 *
 *Front-page styles
@@ -2240,110 +2172,257 @@ object {
 .post-box-downloads {
 }
 /*
-* Font fonts typeface TODO check licenses
+	* Font fonts typeface TODO check licenses
 */
-/*
-.test-unscii {
-  font-family: "Unscii-full", sans-serif;
-}
-
-.test-rubik {
-  font-family: "Rubik Mono One", sans-serif;
-}
-.test-roboto {
-  font-family: "Roboto", sans-serif;
-}
-.test-orbitron {
-  font-family: "Orbitron", sans-serif;
-}*/
-/*
-.test-paytone {
-	font-family: 'Paytone One', sans-serif;
-}
-
-.test-anton {
-	font-family: 'Anton', sans-serif;
-}
-
-.test-2p {
-	font-family: 'Press Start 2P';
-}
-
-
-*/
-
-/*
-* Show extra blocks when in a computer, really nice huh?
-*/
-/*
-@media only screen and (min-width: 992px) {
-  #head-separator {
-    display: block !important;
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Roboto:wght@300;400;700&display=swap');
+@keyframes fade {
+  from {
+    transform: translateX(-150px);
+    opacity: 0;
   }
-  #sidebar {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.contact-form input[type="text"], .contact-form input[type="email"], .contact-form input[type="tel"], .contact-form input[type="url"] {
+    width: 100% !important;
+}
+@media screen and (min-width: 1100px) {
+  .home-buttons-top {
+    margin-bottom: -1.6em;
+  }
+}
+@media only screen and (max-width: 770px) {
+  .large-box {
+    margin: 0 0.5em 0 0.5em !important;
+    padding: 0.5em !important;
+  }
+  .entry-title {
+    padding: 0.5em 0.5em;
+    text-align: start;
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .post, .page {
+    margin: 0 0 0.5em;
+    padding: 0.2em;
+  }
+  .attention-box {
+    margin: 0 0.5em 0 0.5em !important;
+    padding: 0.5em !important;
+  }
+  .post-date {
+    font-size: 0.6rem !important;
+  }
+  .post-pagination {
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+  }
+  #content-and-comments {
+    margin: 0.5em 0.2em 0.5em 0.2em !important;
+    padding: 0 !important;
+  }
+  .entry-content {
+    font-size: 0.8rem;
+    margin: 1em 0 0;
+  }
+  .entry-meta {
+    font-size: 0.6rem;
+  }
+  .author-box h3 {
+    font-size: 0.9rem;
+  }
+  .author-box p,a {
+    font-size: 0.8rem;
+  }
+  .comments-title {
+    font-size: 0.8rem;
+  }
+  .main-posts {
+    margin: 0 0.1em 0 0.1em !important;
+    padding: 0.2em !important;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .sidebar {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    margin: 0 !important;
+    animation: fade ease 400ms forwards;
+  }
+  button, input[type="button"], input[type="reset"], input[type="submit"] {
+    font-size: 1rem
+  }
+  #bp-login-widget-submit {
+    min-width: 60px;
+    font-size: 0.8rem;
+  }
+  .languages li span {
+    font-size: 0.8rem;
+  }
+  .primary {
+    grid-template-columns: 1fr;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  #single-page {
+    margin: 0 !important;
+  }
+
+  .posts-archive {
+    margin: 0 !important;
+    padding: 2em 1em;
+    place-items: center;
+  }
+
+  .entry-content img {
+    margin: 0;
+    width: 100%;
+    max-width: unset;
+  }
+}
+@media screen and (min-width: 651px) {
+  #home-area-top {
+  }
+  .main-posts {
+    padding-left: 0.6em;
+  }
+  #user-area {
+    margin-left:-100px;
     display: block;
   }
-}
-*/
-/*
-* Get some space in-between when we have a bigger screen
-*/
-/*
-@media only screen and (min-width: 1200px) {*/
-/*#main-separator {display: block !important;}*/
-/*  #block-filler {
-    display: block !important;
+  .home-buttons-top {
+    display: flex;
+    align-items: center;
+    padding-left: 2em;
+    margin-bottom: -0.5em;
+  }
+  .qtxbtn {
+    width: 160px;
+    height: auto;
+    margin-bottom: 0.3em;
+  }
+  .qtxbtn:hover {
+    color: black;
+    transition-duration: 3s;
+    margin-bottom: -0.3em;
   }
 }
-*/
-
-/*
-* Disapear the side-bar when on a tablet or something
-*/
-/*
-@media only screen and (max-width: 991px) {
-  #sidebar {
-    display: none;
-  }
-}
-*/
-/*
-@media only screen and (max-width: 702px) {*/
-/*#extra-navigation {
-    display: none;
-  }
-  #header-navbar-area {
-    display: none;
-  }
-  #head-extra {
-    display: none;
-  }*/
-/*
+@media screen and (max-width: 650px) {
   #home-area-top {
     display: none;
-  }*/
-/*
+  }
+  #header {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .large-box {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /*Home top buttons*/
+  .qtxbtn {
+    width: 110px;
+    height: auto;
+    margin-bottom: 0.3em;
+  }
+  .home-buttons-top {
+    display: flex;
+    align-items: center;
+    padding-left: 0.2em;
+    margin-bottom: -1em;
+  }
+  .primary {
+    padding: 0;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+  .main-posts {
+    padding-left: 0.0em;
+  }
+  #user-area {
+    margin-left:-60px;
+    padding-bottom: 1rem;
+    display: none;
+  }
+  .large-box {
+    margin: 1em 0.2em 1em 0.2em !important;
+    padding: 0.3em !important;
+  }
+  .attention-box {
+    margin: 0.5em 0.2em 0.5em 0.2em !important;
+    padding: 0.3em !important;
+  }
+  .post-pagination {
+    margin: 1.2em 0 1.2em 0 !important;
+  }
 }
-@media only screen and (min-width: 703px) {*/
-/* #extra-navigation {
-    display: block;
+@media only screen and (min-width: 770px) {
+  #menu-button {
+    display: none !important;
   }
-  #header-navbar-area {
-    display: block;
+}
+@media screen and (max-width: 450px) {
+  .main-posts {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    margin: 0 0.2em 0 0.2em !important;
+    padding: 0.3em !important;
+    overflow-x: hidden;
+    grid-gap: 0.8em 12px;
   }
-  #head-extra {
-    display: block !important;
-  }*/
-
-/*
-  #home-area-top {
-    display: block;
-  }*/
-/*}*/
-
-/*
-@font-face {
-  font-family: Unscii-full;
-  src: url(fonts/unscii-16-full.otf);
-  font-weight: normal;
-}*/
+  button, input[type="button"], input[type="reset"], input[type="submit"] {
+    font-size: 0.8rem
+  }
+  #bp-login-widget-submit {
+    min-width: 50px;
+    font-size: 0.6rem;
+  }
+  .languages li span {
+    font-size: 0.8rem;
+  }
+  .primary {
+    grid-template-columns: 1fr !important;
+    padding: 0;
+    margin: 0 0 !important;
+  }
+  #header {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr !important;
+  }
+  .menu-button {
+    width: 50px;
+  }
+  .menu-button img {
+    max-width: 96%;
+    height: auto;
+  }
+  .qtxbtn {
+    width: 90px;
+  }
+}
+@media screen and (max-width: 300px) {
+  .post-title h4 {
+    font-size: 1rem;
+  }
+  .main-posts {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 0.6fr)) !important;
+    margin: 0 0.1em 0 0.1em !important;
+    padding: 0.2em !important;
+    overflow-x: hidden;
+    grid-gap: 0.5em 12px;
+  }
+  .primary {
+    grid-template-columns: 1fr !important;
+    padding: 0;
+    margin: 0 0 !important;
+  }
+  #header {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr !important;
+  }
+}
