@@ -22,7 +22,7 @@ if ( post_password_required() or (is_singular('extfeed') && !comments_open()) ) 
 
 <style>
 .comments-area {
-  width: 80%;
+  width: 100%;
   padding: 10px;
 	display: flex;
 }
@@ -56,7 +56,8 @@ if ( post_password_required() or (is_singular('extfeed') && !comments_open()) ) 
 	/*position: absolute;*/
 }
 .comment-content {
-	padding-left: 80px;
+	padding-left: 10px;
+	padding-right: 10px;
 	padding-top: 15px;
 	/*position: relative;*/
 }
@@ -69,10 +70,11 @@ if ( post_password_required() or (is_singular('extfeed') && !comments_open()) ) 
 }
 .comment-list {
 	padding: 0;
+	margin: 0.2em 0 1.5em 0.2em;
   list-style-type: none;
 }
 .comment-box-ads {
-	min-width: 15%;
+	min-width: 0;
 }
 #comments-login .wp-social-login-provider-list {
 	display: flex !important;
