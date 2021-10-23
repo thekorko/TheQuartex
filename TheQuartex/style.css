@@ -2410,7 +2410,7 @@ object {
     font-size: 1rem;
   }
   .main-posts {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 0.6fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
     margin: 0 0.1em 0 0.1em !important;
     padding: 0.2em !important;
     overflow-x: hidden;
