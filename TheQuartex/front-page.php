@@ -23,27 +23,6 @@ $homeURL = home_url();
 	<!--class="content-area"-->
 	<!--Esta sidebar es lateral generica, es la default.-->
 	<?php get_sidebar('sidebar-1'); ?>
-	<style>
-	.home-buttons-top {
-		display: flex;
-		align-items: center;
-		padding-left: 2em;
-		margin-bottom: -1.6em;
-	}
-	.home-buttons-top a {
-		margin-right: -10em;
-	}
-	.qtxbtn {
-		width: 50%;
-		height: auto;
-
-	}
-	.qtxbtn:hover {
-		color: black;
-		transition-duration: 3s;
-		margin-bottom: -0.3em;
-	}
-	</style>
 
 	<main id="main-content" class="main-content">
 
@@ -88,9 +67,9 @@ $homeURL = home_url();
 						<?php endif; ?>
 					<?php endif; ?>
 					<?php if (qtx_is_staff()): ?>
-					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;" href="<?=$currentURL.'/?qtxcache=yes'?>">Update DDL Cache</a>
-					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;" href="<?=$currentURL.'/?qtxrss=yes'?>">Update RSS Feeds</a>
-					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;" href="<?=$currentURL.'/?qtxrssupdateoldposts=yes'?>">Update Old Posts</a>
+					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxcache=yes'?>">Update DDL Cache</a>
+					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxrss=yes'?>">Update RSS Feeds</a>
+					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxrssupdateoldposts=yes'?>">Update Old Posts</a>
 						<?php
 						if (isset($_GET['qtxcache'])&&(htmlspecialchars($_GET['qtxcache']=='yes'))) {
 							qtxDownloadsCache_run_cron();
