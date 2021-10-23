@@ -39,7 +39,6 @@ get_header();
 	.sidebar, #single-post {
 		flex: 100%;
 	}
-
 	}
 	.linktree-menu .menu-linktree-container {
 		background: #AA00DE;
@@ -58,7 +57,7 @@ get_header();
 	#single-page {
 		display: grid;
 		grid-gap: 2em 10px;
-		margin: 0 1em 0 3em ;
+		margin: 0 1em 0 3em;
 		padding: 0.2em 0.2em;
 		padding-left: 0.2em;
 	}

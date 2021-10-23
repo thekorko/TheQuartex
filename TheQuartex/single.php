@@ -70,13 +70,23 @@ get_header();
 	.singlepost-box {
 		border: 2px solid #000;
 	}
-	#content-and-comments {
-		display: grid;
-		grid-gap: 2em 10px;
-		margin: 0 1em 0 3em;
-		padding: 2em 1em;
-		padding-left: 1em;
+	@media screen and (min-width: 1101px) {
+		#content-and-comments {
+			display: grid;
+			grid-gap: 0.5em 10px;
+			margin: 0 0 0 1.2em;
+			padding: 0.4em 0.4em 0.4em 0.4em;
+		}
 	}
+	@media screen and (max-width: 1100px) {
+		#content-and-comments {
+			display: grid;
+			grid-gap: 0.5em 10px;
+			margin: 0 0 0 0.8em;
+			padding: 0.2em 0.2em 0.2em 0.2em;
+		}
+	}
+
 </style>
 <div id="primary" class="primary">
 	<?php get_sidebar('sidebar-1'); ?>
@@ -117,7 +127,7 @@ get_header();
 
 		</div>
 		<?php
-		//get_sidebar('home-area-top'); 
+		//get_sidebar('home-area-top');
 		//we reutilize the home-area-top attention box
 		?>
 	</main>
