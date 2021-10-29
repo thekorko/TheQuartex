@@ -147,14 +147,15 @@ tt,
 var {
   font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
   font-size: 16px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #ABB2BF;
+  /*
   margin: 0 0 0 10px;
   padding: 5px 5px 5px 5px;
+  */
   overflow-x: scroll;
   white-space: pre-wrap;
-  /*border-left: 4px solid #292929;*/
-  line-height: 15px;
+  border-left: 4px solid #292929;
   font-weight: 800;
   background: #22252C;
 }
@@ -176,7 +177,9 @@ pre {
   border: 2px solid #292929;
   padding: 5px;
 }
-
+pre samp,code,kbd,tt,var {
+  white-space: nowrap;
+}
 
 /* Text-level semantics
 	 ========================================================================== */
@@ -222,7 +225,7 @@ abbr[title] {
 
 b,
 strong {
-  font-weight: bolder;
+  font-weight: 600;
 }
 
 /**
@@ -471,7 +474,7 @@ template {
 --------------------------------------------------------------*/
 
 body {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-family: Verdana;
   color: #eaeaea;
   /*
@@ -481,12 +484,12 @@ body {
   font-size: 18px;
   */
   line-height: 1.2;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 p {
   margin-top: 2px;
-  line-height: 1.7em;
+  line-height: 1.2em;
   word-break: break-word;
 }
 
@@ -620,7 +623,8 @@ textarea {
 }
 
 p {
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
+  margin-top: 1em;
 }
 
 dfn,
@@ -2022,7 +2026,7 @@ object {
   border: 4px solid;
   border-color: #11122B;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 20px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -2287,6 +2291,24 @@ object {
     margin: 0;
     width: 100%;
     /*max-width: unset;*/
+  }
+  samp,
+  code,
+  kbd,
+  tt,
+  var {
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 14px;
+    font-size: 0.8rem;
+    color: #ABB2BF;
+    overflow-x: scroll;
+    white-space: pre-wrap;
+    border-left: 4px solid #292929;
+    font-weight: 650;
+    background: #22252C;
+  }
+  pre code,tt,var,kbd,samp {
+    white-space: nowrap;
   }
 }
 @media screen and (min-width: 651px) {
