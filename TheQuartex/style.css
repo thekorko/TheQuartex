@@ -2288,9 +2288,7 @@ object {
   }
 
   .entry-content img {
-    margin: 0;
     width: 100%;
-    /*max-width: unset;*/
   }
   samp,
   code,
