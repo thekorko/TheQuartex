@@ -14,7 +14,6 @@
 //Don't show this if the post is already from qtxanon....
 function qtxAnon_initialize() {
   if (qtx_is_staff() && function_exists('qtxAnon_exec')) {
-    echo "<p>This a button for anonymizng author post data</p>";
     $user_name = "QTXAnnonBOT";
     $user_id = username_exists( $user_name );
     if ( ! $user_id ) {
@@ -59,7 +58,7 @@ if (qtx_is_staff()) {
   function qtxAnon_echoButton() { ?>
     <form method="post">
       <input type="hidden" id="qtxAnon" name="qtxAnon" value="yes">
-     <p><input type="submit"/></p>
+     <input type="submit" value="Annonymize">
     </form>
 <?php
   }
