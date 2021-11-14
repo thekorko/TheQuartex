@@ -743,16 +743,8 @@ function qtx_user_check_shortcode($atts, $content = null) {
 	return;
 }
 add_shortcode('qtx', 'qtx_user_check_shortcode');
-/*
-* center shortcode for stupid pages bullshit my fucking god
-* https://developer.wordpress.org/reference/functions/do_shortcode/
-*/
-/*
-function qtx_center_shortcode($atts, $content = null) {
-	return do_shortcode('<center>'.$content.'</center>');
-}
-add_shortcode('center', 'qtx_center_shortcode');
-*/
+add_shortcode('register', 'qtx_user_check_shortcode');
+
 /*
 * Filter random and crap posts from index
 * TODO bug in frontpage it does count as post
@@ -983,7 +975,7 @@ add_action('init', 'dashboard_redirect');
 /**
 * We include bootstrap-grid
 */
-/*
+/* TODO
 if (is_page(array( 'about-us', 'contact', 'management' )) ) {
 	function flexbox_grid() {
 		wp_enqueue_style( 'flexbox_grid',
@@ -1001,6 +993,7 @@ if (is_page(array( 'about-us', 'contact', 'management' )) ) {
 * Redirect author.php to buddypress
 */
 
+//TODO add post list and styles using bootstrap?
 function buddydev_author_redirect_to_profile() {
 
     if ( is_author() && function_exists( 'bp_core_redirect' ) ) {
