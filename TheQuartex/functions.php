@@ -728,6 +728,17 @@ function qtx_moderation_acccess() {
 function qtx_user_check_shortcode($atts, $content = null) {
 	if (is_user_logged_in() && !is_null($content)) {
 		return do_shortcode($content);
+	} else {
+		$lang = pll_current_language();
+		if (is_singular() or is_page()) {
+			if ($lang=='en') {
+				echo '<a href="https://quartex.net/en/register"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_en.png"></a>';
+			} elseif ($lang=='es') {
+				echo '<a href="https://quartex.net/es/registrarse"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_es.png"></a>';
+			}
+		} else {
+		 qtx_string_e('not_logged_in');
+		}
 	}
 	return;
 }
