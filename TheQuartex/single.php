@@ -98,15 +98,12 @@ get_header();
 			while (have_posts()) :
 				the_post();
 				//get the content
-				qtxAnon_initialize();
 				if (qtx_is_staff()) {
-					echo ("<a href='".get_delete_post_link(get_the_ID())."'>DELETE</a>");
-					echo("<a href='".get_site_url()."/wp-admin/post.php?post=".get_the_ID()."&action=edit'>EDIT</a>");
-					//$test = get_edit_post_link();
-					//$test2 = get_the_ID();
-					//var_dump($test2);
-					//edit_post_link( __( 'edit', 'textdomain' ), '<p>', '</p>', get_the_ID() );
-					//var_dump($test);
+				echo '<div style="display:flex;">';
+				qtxAnon_initialize();
+					echo("<a href='".get_delete_post_link(get_the_ID())."'><button>DELETE</button></a>");
+					echo("<a href='".get_site_url()."/wp-admin/post.php?post=".get_the_ID()."&action=edit'><button>EDIT</button></a>");
+				echo '</div>';
 				}
 				if (get_post_type()=='extfeed') {
 					get_template_part('template-parts/content');
