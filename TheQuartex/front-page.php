@@ -34,6 +34,7 @@ $homeURL = home_url();
 				$type = "normal";
 				?>
 				<?php
+				$author_exclude = '';
 				if (qtx_moderation_acccess()) {
 					//testing if this could work fine
 					//Save links in this array using array_push or something
@@ -42,6 +43,9 @@ $homeURL = home_url();
 					$moderation_link = '<a href="'.$links['moderation'].'">Moderation</a>';
 					if (isset($_GET['moderation']) && (htmlspecialchars($_GET['moderation']) == 'yes')) {
 						$statuses = array('pending');
+						if (!qtx_is_staff()) {
+							$author_exclude = '-1';
+						}
 					} else {
 						$statuses = array('publish','private');
 					}
@@ -54,12 +58,14 @@ $homeURL = home_url();
 				} ?>
 				<div id="quartex-buttons" class="home-buttons-top">
 					<?php if (pll_current_language()=='en'): ?>
+						<a href="<?=$homeURL?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/home.png"></a>
 						<a href="<?=$homeURL.'/downloads'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/downloads.png"></a>
 						<a href="<?=$homeURL.'/random_en'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/randomposts.png"></a>
 						<?php if (qtx_moderation_acccess()): ?>
 							<a href="<?=$links['moderation']?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/moderation.png"></a>
 						<?php endif; ?>
 					<?php else: ?>
+						<a href="<?=$homeURL?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/home.png"></a>
 						<a href="<?=$homeURL.'/descargas'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/descargas.png"></a>
 						<a href="<?=$homeURL.'/random_es'?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/posteosrandom.png"></a>
 						<?php if (qtx_moderation_acccess()): ?>
@@ -71,15 +77,15 @@ $homeURL = home_url();
 					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxrss=yes'?>">Update RSS Feeds</a>
 					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxrssupdateoldposts=yes'?>">Update Old Posts</a>
 						<?php
-						if (isset($_GET['qtxcache'])&&(htmlspecialchars($_GET['qtxcache']=='yes'))) {
+						if (isset($_GET['qtxcache'])&&(htmlspecialchars($_GET['qtxcache'])=='yes')) {
 							qtxDownloadsCache_run_cron();
 							echo "<br>success running update downloads cache";
 						}
-						if (isset($_GET['qtxrss'])&&(htmlspecialchars($_GET['qtxrss']=='yes'))) {
+						if (isset($_GET['qtxrss'])&&(htmlspecialchars($_GET['qtxrss'])=='yes')) {
 							qtxRSSFetchAllFeeds_run_cron();
 							echo "<br>success running update qtxrss cache";
 						}
-						if (isset($_GET['qtxrssupdateoldposts'])&&(htmlspecialchars($_GET['qtxrssupdateoldposts']=='yes'))) {
+						if (isset($_GET['qtxrssupdateoldposts'])&&(htmlspecialchars($_GET['qtxrssupdateoldposts'])=='yes')) {
 							$updateoldposts = True;
 							qtxRSSupdateOldPosts($updateoldposts);
 							echo "<br>Fixing old posts";
@@ -115,6 +121,7 @@ $homeURL = home_url();
 						'post__not_in' => get_option( 'sticky_posts' ),
 						'ignore_sticky_posts' => 1,
 						'post_status' => $statuses,
+						'author' => $author_exclude,
 						//get paged, this is a secured wordpress way of getting pages
 						'paged' => $paged,
 						//tax query to find only posts from the cats_query categories taxonomy
