@@ -732,9 +732,9 @@ function qtx_user_check_shortcode($atts, $content = null) {
 		$lang = pll_current_language();
 		if (is_singular() or is_page()) {
 			if ($lang=='en') {
-				echo '<a href="https://quartex.net/en/register"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_en.png"></a>';
+				return '<a href="https://quartex.net/en/register"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_en.png"></a>';
 			} elseif ($lang=='es') {
-				echo '<a href="https://quartex.net/es/registrarse"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_es.png"></a>';
+				return '<a href="https://quartex.net/es/registrarse"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_es.png"></a>';
 			}
 		} else {
 		 qtx_string_e('not_logged_in');
@@ -859,7 +859,7 @@ function qtx_post_has_content() {
 	//returns true if post has content, false if not.
   return !empty($qtx_post_content);
 }
-
+/* TODO generator?
 function qtx_content_generator() {
 	if (qtx_is_staff()) { ?>
 		<span><h4 class="post-title-h4">
@@ -868,7 +868,7 @@ function qtx_content_generator() {
 <?php
 	}
 }
-
+*/
 //fontawesome and wp-social-login
 //function to render fontawesome into wp-social
 function qtx_wsl_fontawesome_full( $provider_id, $provider_name, $authenticate_url )
