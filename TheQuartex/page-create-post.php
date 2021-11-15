@@ -56,7 +56,7 @@ Template Name: create-post
             <?php
             if (is_user_logged_in()) {
               $user = wp_get_current_user();
-              $publish_roles = array('editor', 'administrator', 'author', 'qtx_user');
+              $publish_roles = array('editor', 'administrator', 'author', 'qtx_user', 'qtx_mod', 'qtx_vip');
               $review_roles = array('qtx_noob', 'subscriber', );
               if ((array_intersect($publish_roles, $user->roles))) {
                 //post form

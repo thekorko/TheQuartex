@@ -100,7 +100,7 @@ $homeURL = home_url();
 					'orderby' => 'name',
 					'order'   => 'ASC'
 				) );
-				$cats_query = array( 'memes','random_es','random_en','memes_es' );
+				$cats_query = array( 'memes','random_es','random_en','memes-es','memes-en','random-en','random-es','random','trash-bin','papelera-de-reciclaje' );
 				$counter = 0;
 				foreach ($categories as $category) {
 					//TODO fix it doesnt work

@@ -17,22 +17,29 @@ get_header();
 <div id="primary" class="primary">
 	<?php	get_sidebar(); ?>
 	<main id="main" class="main-content">
-		<div id="main-posts" class="main-posts">
+		<div id="main-posts" style="display:flex;">
+			<style>
+			#column-1 {
+				width: 50%;
+			}
+			#column-2 {
+				width: 50%;
+			}
+			</style>
+			<div id="column-1" class="main-posts" style="height:auto;overflow-y:visible;">
 			<?php
 			 $attachments = get_posts( array(
 									'post_type' => 'attachment',
-									'posts_per_page' => 5,
+									'posts_per_page' => 10,
 									'paged' => $paged,
 									'post_parent' => $post->ID,
 									'exclude'     => get_post_thumbnail_id()
 							) );
-
 											if ( $attachments ) {
 													foreach ( $attachments as $attachment ) {
 															//var_dump($attachment->post_mime_type);
 															$images = array('image/jpeg','image/png','image/gif','image/webp');
 															$videos = array('video/mpeg','video/mp4','video/quicktime','video/webm');
-
 
 															if (in_array($attachment->post_mime_type, $images)) {
 																$thumbimg = wp_get_attachment_image( $attachment->ID, 'thumbnail', false );
@@ -50,22 +57,21 @@ get_header();
 																qtx_echo_thumb_box($attachment->ID, $type, $class, $thumbimg, $attachment->post_mime_type);
 															}
 													}
-											}
-							?>
+											} ?>
+					</div>
 <?php
 //categories
 //pre arguments
 //TODO make this modificable with dashboard options
 //Query paramaeter https://developer.wordpress.org/reference/classes/wp_query/
 //https://developer.wordpress.org/reference/functions/query_posts/
-$cats_query = array( 'memes','random-es','random-en','memes-es','random');
+$cats_query = array( 'memes','random_es','random_en','memes-es','memes-en','random-en','random-es','random','trash-bin','papelera-de-reciclaje' );
 if (qtx_is_staff()) {
 	//testing if this could work fine
 	$statuses = array('publish');
 } else {
 	$statuses = array('publish');
 }
-
 //get_query _var( 'paged' ) - this function basically look for a GET variable in the URL, '?paged=X'
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 //Categories and user IDs arguments for my WP _Query
@@ -92,11 +98,9 @@ $post_query_args = array(
 
 	// the query
 	$the_query = new WP_Query($post_query_args); ?>
-
+	<div id="column-1" class="main-posts" style="height:auto;overflow-y:visible;">
 	<?php if ( $the_query->have_posts() ) : ?>
-
 	    <!-- pagination here -->
-
 	    <!-- the loop -->
 			<?php $j = 1; ?>
 	    <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
@@ -110,6 +114,7 @@ $post_query_args = array(
 			<?php endwhile; ?>
 	    <!-- end of the loop -->
 			<br>
+		</div>
 		</div><!-- #main-posts -->
 		<div id="posts-pagination" class="post-pagination">
 			<?php qtx_navigation(array( 'query' => $the_query )); ?>
@@ -117,8 +122,9 @@ $post_query_args = array(
 			<!-- pagination here -->
 		</div>
 	<?php else : ?>
+			<p><?php qtx_string_e("no_posts_found"); ?></p>
+			</div>
 		</div><!-- #main-posts -->
-	    <p><?php qtx_string_e("no_posts_found"); ?></p>
 	<?php endif; ?>
 
 	</main>
