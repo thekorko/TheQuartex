@@ -100,11 +100,11 @@ $homeURL = home_url();
 					'orderby' => 'name',
 					'order'   => 'ASC'
 				) );
-				$cats_query = array( 'memes','random_es','random_en','memes-es','memes-en','random-en','random-es','random','trash-bin','papelera-de-reciclaje' );
+				$cats_query = array( 'memes','random_es','random_en','memes-es','memes_es','memes_en','memes-en','random-en','random-es','random','trash-bin','papelera-de-reciclaje' );
 				$counter = 0;
 				foreach ($categories as $category) {
 					//TODO fix it doesnt work
-					if (in_array(strtolower($category->name),$cats_query)) {
+					if (in_array(strtolower($category->slug),$cats_query)) {
 						//it never is true
 						$excludedcats[$counter] = $category->term_id;
 						//array_push($excludedcats, $category->term_id);
