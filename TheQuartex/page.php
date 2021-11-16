@@ -39,9 +39,6 @@ get_header();
 			<?php
 			while (have_posts()) :
 				//fix this not working properly
-				if (!qtx_post_has_content()) {
-					qtx_content_generator();
-				}
 				the_post();
 				get_template_part('template-parts/content', get_post_type());
 				get_template_part('template-parts/large-box');
