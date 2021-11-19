@@ -736,8 +736,11 @@ function qtx_user_check_shortcode($atts, $content = null) {
 			} elseif ($lang=='es') {
 				return '<a href="https://quartex.net/es/registrarse"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_es.png"></a>';
 			}
+		} elseif(is_front_page()) {
+			return;
 		} else {
-		 qtx_string_e('not_logged_in');
+			return;
+		 //qtx_string_e('not_logged_in');
 		}
 	}
 	return;
