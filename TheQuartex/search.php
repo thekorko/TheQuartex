@@ -9,7 +9,7 @@
 
 get_header();
 ?>
-<?php if (have_posts()) : ?>
+<?php if (have_posts()&&!empty($_GET['s'])) : ?>
 <section id="primary" class="primary">
 	<?php	get_sidebar(); ?>
 	<main id="main" class="main-content">
@@ -24,7 +24,6 @@ get_header();
 					<!-- .page-header -->
 			<?php
 			/* Start the Loop */
-			$j = 1;
 			while ( have_posts() ) :
 				the_post();
 
@@ -34,7 +33,7 @@ get_header();
 				 * called content-search.php and that will be used instead.
 				 */
 				get_template_part( 'template-parts/content', 'search' );
-			  $j = $j+1;
+
 			endwhile; ?>
 		</div><!-- #main-posts -->
 		<div id="posts-pagination" class="post-pagination">

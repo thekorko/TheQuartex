@@ -6,5 +6,4 @@
     <button class="search-submit">
       <i class="fas fa-search"></i><?php echo esc_attr_x(' Search', 'submit button') ?>
     </button>
-    <!--<input type="submit" class="search-submit col-xs-4 col-md-3" value="" />-->
 </form>
