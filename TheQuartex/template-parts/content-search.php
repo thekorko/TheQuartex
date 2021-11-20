@@ -11,6 +11,7 @@
 	* If you want to override this in a child theme, then include a file
 	* called content-___.php (where ___ is the Post Type name) and that will be used instead.
 	*/
- $type = "archives";
- qtx_echo_post_box($j, $type);
+    $type = "archives";
+    $j = 'search';
+    qtx_echo_post_box($j, $type);
 ?>
