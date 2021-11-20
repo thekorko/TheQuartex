@@ -102,7 +102,35 @@ get_header();
 				echo '<div style="display:flex;">';
 				qtxAnon_initialize();
 					echo("<a href='".get_delete_post_link(get_the_ID())."'><button>DELETE</button></a>");
+					echo("<a href='".get_permalink(get_the_ID())."?set_trash=yes'><button>TRASH</button></a>");
+					echo("<a href='".get_permalink(get_the_ID())."?set_random=yes'><button>RANDOM</button></a>");
 					echo("<a href='".get_site_url()."/wp-admin/post.php?post=".get_the_ID()."&action=edit'><button>EDIT</button></a>");
+					$set_trash = isset($_GET['set_trash']) && htmlspecialchars($_GET['set_trash'], ENT_QUOTES)=='yes';
+					$set_random = isset($_GET['set_random']) && htmlspecialchars($_GET['set_random'], ENT_QUOTES)=='yes';
+					if ($set_trash || $set_random) {
+						$append = false;
+						$lang = pll_current_language();
+						$cat_id = 0;
+						if ($lang=='en') {
+							if ($set_trash) {
+								$cat_id = get_cat_ID( 'Trash Bin' );
+							} elseif($set_random) {
+								$cat_id = get_cat_ID( 'Random_en' );
+							}
+						} else {
+							if ($set_trash) {
+								$cat_id = get_cat_ID( 'Papelera de Reciclaje' );
+							} elseif($set_random) {
+								$cat_id = get_cat_ID( 'Random_es' );
+							}
+						}
+						if (!$cat_id) {
+							echo "<span class='top-toolbar'>Feed not found</span>";
+						} else {
+							echo "<span class='top-toolbar'>Feed was set</span>";
+							wp_set_post_categories( get_the_ID(), $cat_id, $append );
+						}
+					}
 				echo '</div>';
 				}
 				if (get_post_type()=='extfeed') {
