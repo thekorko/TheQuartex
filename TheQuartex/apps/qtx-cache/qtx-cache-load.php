@@ -61,6 +61,8 @@ function qtxDownloadsQuery($language, $quantity) {
       'post_type' => 'post',
   		'posts_per_page' => $quantity,
       'lang'     => $lang,
+      'offset' => 5,
+      'post_status' => 'publish',
   		//get paged, this is a secured wordpress way of getting pages
   		//tax query to find only posts from the cats_query categories taxonomy
       'tax_query' => array(
