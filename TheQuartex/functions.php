@@ -317,9 +317,26 @@ function qtx_post_thumb() {
 			echo $media[0];
 		} elseif ( has_post_thumbnail() ) {
 			the_post_thumbnail();
-		} else { ?>
-			<img src="<?php bloginfo('template_directory'); ?>/img/synth.png" alt="<?php the_title(); ?>" /> <!-- This shows a default image -->
-			<?php
+		} else {
+			$types = array('image');
+			$media = get_media_embedded_in_content($filters, $types);
+			if (!$media) {
+				//alt=the_title()
+				echo '<img src="'.get_template_directory_uri().'/img/synth.png" /> <!-- This shows a default image -->';
+			} else {
+				$img = '';
+				foreach ($media as $tryimg) {
+					if (strlen($tryimg)>20) {
+						//echo "test<br>";
+						$img = $tryimg;
+						echo "$img";
+						//var_dump($img);
+						//set_post_thumbnail( the_ID(), attachment_url_to_postid($img));
+						break;
+					}
+				}
+			//var_dump(array_filter(array_map('trim', $media), 'strlen'));
+			}
 		}
 }
 //If polylang exists we register all the strings for the theme
@@ -685,6 +702,17 @@ function qtx_is_staff() {
 	if (is_user_logged_in()) {
 		$user = wp_get_current_user();
 		$staff_roles = array('qtx_mod', 'editor', 'administrator');
+		if ((array_intersect($staff_roles, $user->roles))) {
+			return True;
+		} else {
+			return False;
+		}
+	}
+}
+function qtx_is_admin() {
+	if (is_user_logged_in()) {
+		$user = wp_get_current_user();
+		$staff_roles = array('administrator');
 		if ((array_intersect($staff_roles, $user->roles))) {
 			return True;
 		} else {

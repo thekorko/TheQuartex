@@ -43,7 +43,7 @@ $homeURL = home_url();
 					$moderation_link = '<a href="'.$links['moderation'].'">Moderation</a>';
 					if (isset($_GET['moderation']) && (htmlspecialchars($_GET['moderation']) == 'yes')) {
 						$statuses = array('pending');
-						if (!qtx_is_staff()) {
+						if (!qtx_is_admin()) {
 							$author_exclude = '-1';
 						}
 					} else {
@@ -72,7 +72,7 @@ $homeURL = home_url();
 						<a href="<?=$links['moderation']?>"><img class="qtxbtn" src="<?php bloginfo('template_directory'); ?>/img/sections/moderacion.png"></a>
 						<?php endif; ?>
 					<?php endif; ?>
-					<?php if (qtx_is_staff()): ?>
+					<?php if (qtx_is_admin()): ?>
 					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxcache=yes'?>">Update DDL Cache</a>
 					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxrss=yes'?>">Update RSS Feeds</a>
 					<a style="background:#448884;color:#BB0070 !important;margin:0px;padding:7px;border:solid 3px #BB0070;border-radius:3px;height:25px;font-size:0.8rem;" href="<?=$currentURL.'/?qtxrssupdateoldposts=yes'?>">Update Old Posts</a>
