@@ -62,7 +62,7 @@
 			}
 				?>
 					<?php get_sidebar('user-area'); ?>
-					<a href="<?php get_permalink(); ?>?random=yes"><button style="font-size:10px" class="search-submit">Random</button></a>
+					<a href="<?php get_permalink(); ?>?random=yes"><button style="font-size:10px" class="search-submit">Get lucky!</button></a>
 				</div>
 			</div>
 
