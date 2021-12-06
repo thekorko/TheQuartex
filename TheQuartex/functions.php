@@ -701,7 +701,7 @@ function qtx_user_info($userID = 0) {
 function qtx_is_staff() {
 	if (is_user_logged_in()) {
 		$user = wp_get_current_user();
-		$staff_roles = array('qtx_mod', 'editor', 'administrator');
+		$staff_roles = array('editor', 'administrator');
 		if ((array_intersect($staff_roles, $user->roles))) {
 			return True;
 		} else {
@@ -713,6 +713,17 @@ function qtx_is_admin() {
 	if (is_user_logged_in()) {
 		$user = wp_get_current_user();
 		$staff_roles = array('administrator');
+		if ((array_intersect($staff_roles, $user->roles))) {
+			return True;
+		} else {
+			return False;
+		}
+	}
+}
+function qtx_is_mod() {
+	if (is_user_logged_in()) {
+		$user = wp_get_current_user();
+		$staff_roles = array('qtx_mod');
 		if ((array_intersect($staff_roles, $user->roles))) {
 			return True;
 		} else {
