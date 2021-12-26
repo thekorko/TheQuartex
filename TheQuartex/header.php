@@ -22,6 +22,7 @@
 	<script src="https://kit.fontawesome.com/3a1a757ef1.js" crossorigin="anonymous"></script>
 	<?php wp_head(); ?>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5750670113076133" crossorigin="anonymous"></script>
 </head>
 
 <body class="site-background">

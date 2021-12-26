@@ -1,0 +1,2 @@
+delete htaccess.bk
+license and readme from root sv
