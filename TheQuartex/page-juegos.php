@@ -96,16 +96,19 @@ get_header();
 				$playGame = $key;
 				$gamedesc = $Game['description'];
 				echo '
-				<a href="'.$blogURL.'es/juegos/?playgame='.$playGame.'" title="'.$gametitle.'">
+				<a href="'.$blogURL.'/juegos-navegador/?playgame='.$playGame.'" title="'.$gametitle.'">
 					<div id="post-"'.$playGame.'" class="base-box post-box post-normal">
 						<div id="post-title">
 							<div class="post-title">
-								<span><h4 class="post-title-h4">
+								<span>
+								<h4 class="post-title-h4">
 									<center>
 										<i class="fas fa-gamepad" aria-hidden="true"></i> '.$gametitle.'
 									</center>
-								</h4></span></div>
+								</h4>
+								</span>
 							</div>
+						</div>
 						<div id="post-thumb" class="row">
 							<div class="post-thumb">
 								<img src="'.$gameimg.'" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" loading="lazy" width="450" height="95"> </div>
