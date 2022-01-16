@@ -24,8 +24,7 @@ if ( ! is_active_sidebar( 'featured-post' ) ) {
 }
 ?>
 
-<!--<div class="featured-content post-box">-->
-  <!--TODO callear un sidebar-->
+	<!--Adsense-->
   <?php dynamic_sidebar( 'featured-post' ); ?>
 	<div id="single-post-list-container" class="singlepost-list-box">
 	<style>
