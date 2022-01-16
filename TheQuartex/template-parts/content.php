@@ -47,11 +47,10 @@
 	}
 </style>
 <div id="row-template-content">
-	<?php if (is_singular() or is_page()) : //if this is a single post we will show the entire content, sidebars, etc. ?>
+	<?php if (is_singular() or is_page()): ?>
 		<div id="single-post-container">
 
 			<article id=" post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
-
 				<!-- entry-header -->
 				<header class="entry-header base-box" style="display:grid;">
 					<!--titlte div background stripes-->
@@ -66,12 +65,22 @@
 					thequartex_posted_by(); ?>
 					<!-- entry-header -->
 					</div>
-
-					<?php if ('post' === get_post_type()) :	?>
-					</header>
-					<?php get_sidebar('content-top'); ?>
-				<?php endif; ?>
+				</header>
 			<div id="entry-content" class="entry-content">
+				<!--Adsemse-->
+				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5750670113076133"
+						 crossorigin="anonymous"></script>
+				<!-- inside_posts -->
+				<ins class="adsbygoogle"
+						 style="display:block"
+						 data-ad-client="ca-pub-5750670113076133"
+						 data-ad-slot="9841740587"
+						 data-ad-format="auto"
+						 data-full-width-responsive="true"></ins>
+				<script>
+						 (adsbygoogle = window.adsbygoogle || []).push({});
+				</script>
+
 				<?php
 				the_content(sprintf(
 					wp_kses(
@@ -89,21 +98,31 @@
 				wp_link_pages(array(
 					'before' => '<div class="page-links">' . esc_html__('Pages:', 'TheQuartex'),
 					'after'  => '</div>',
-				));
+				)); ?>
+				<!--Adsense-->
+				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5750670113076133"
+				     crossorigin="anonymous"></script>
+				<ins class="adsbygoogle"
+				     style="display:block; text-align:center;"
+				     data-ad-layout="in-article"
+				     data-ad-format="fluid"
+				     data-ad-client="ca-pub-5750670113076133"
+				     data-ad-slot="8000183482"></ins>
+				<script>
+				     (adsbygoogle = window.adsbygoogle || []).push({});
+				</script>
+				<?php
 				qtxrss_echoExtFeedInformationBox();
 				?>
-
 			</div><!-- .entry-content -->
-
 			<footer class="entry-footer">
 				<?php get_sidebar('content-bottom'); ?>
 			</footer><!-- .entry-footer -->
-			</article><!-- #post-<?php the_ID(); ?> -->
+			</article>
 		</div>
-	<?php else : //if we are on a category or archive we will show little info and some links ?>
+	<?php else : ?>
 		<div id="single-post-container" class="singlepost-box">
 			<?php qtx_echo_post_blog(); ?>
 		</div>
-		<?php endif; ?>
-
-		</div>
+	<?php endif; ?>
+</div>
