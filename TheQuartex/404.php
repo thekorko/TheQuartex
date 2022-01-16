@@ -42,6 +42,18 @@ get_header();
 				</header><!-- .page-header -->
 
 				<div class="page-content entry-content">
+					<!--Adsense-->
+					<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5750670113076133"
+							 crossorigin="anonymous"></script>
+					<ins class="adsbygoogle"
+							 style="display:block; text-align:center;"
+							 data-ad-layout="in-article"
+							 data-ad-format="fluid"
+							 data-ad-client="ca-pub-5750670113076133"
+							 data-ad-slot="8000183482"></ins>
+					<script>
+							 (adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
 					<p><?php qtx_string_e('It looks like nothing was found at this location. Maybe try one of the links below or a search?'); ?></p>
 
 					<?php
