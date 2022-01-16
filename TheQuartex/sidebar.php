@@ -45,6 +45,7 @@ if (!is_active_sidebar('sidebar-1')) {
 			?>
 			<!--Outputs an ul list of links managed from main-navigation styles-->
 		</nav>
+			<!--Adsense-->
 			<?php get_sidebar('featured-ads'); ?>
 	</div>
 
