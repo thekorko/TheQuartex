@@ -1,0 +1,3 @@
+		'quicktags' => array(
+ 	       'buttons' => 'strong,em,link,block,del,ins,img,ul,ol,li,code,close'
+	    )
