@@ -100,6 +100,7 @@ if ( ! function_exists( 'thequartex_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'thequartex_setup' );
 
+
 /* TODO disable site kit,adsense and monsterinsights on private pages
 if (!qtx_is_staff()) {
 	$network_wide = True;
@@ -692,7 +693,30 @@ function qtx_user_info($userID = 0) {
 	//php is loosely tiped language but you can use strict Arguments
 	//https://www.tutorialspoint.com/php/php_functions.htm
 }
-
+/*Comments with rich text editor*/
+add_filter( 'comment_form_defaults', 'rich_text_comment_form' );
+function rich_text_comment_form( $args ) {
+	ob_start();
+	wp_editor( '', 'comment', array(
+		'media_buttons' => false, // show insert/upload button(s) to users with permission
+		'textarea_rows' => '5', // re-size text area
+		'dfw' => false, // replace the default full screen with DFW (WordPress 3.4+)
+		'tinymce' => false,
+		'quicktags' => array(
+ 	       'buttons' => 'img,link,strong,em,del,li,block,close'
+	    )
+	) );
+	$args['comment_field'] = ob_get_clean();
+	return $args;
+}
+/*Hook into approved comments to send notification*/
+function show_message_function( $comment_ID, $comment_approved ) {
+    if( 1 === $comment_approved ){
+        //function logic goes Here
+				//TODO urgente
+    }
+}
+add_action( 'comment_post', 'show_message_function', 10, 2 );
 // TODO: custom cache functionality
 /*
 * Authentication functions
@@ -966,7 +990,149 @@ function qtx_social_login($version = "default") {
 			wp_login_form();
 		}
 }
+/*Redireccionamos en caso de que no estamos en la página indicada*/
+/*Hay que usarla en el header si o si.*/
+function redirect_any($time = 60, $page = '', $valores = '', $frontend = False, $timer = False) {
+	$blogURL = home_url();
+	$timems = $time*100;
+	//TODO arreglar el timer este de mierda (movi el window.location a un else ahi abajo porque no andaba y no andaba)
+	if ($time>0 && $timer && $frontend) {
+		echo '
+		<script>
+			timeLeft = '.$time.';
+			function countdown() {
+				timeLeft--;
+				document.getElementById("segundos").innerHTML = String( timeLeft );
+				if (timeLeft > 0) {
+					setTimeout(countdown, '.$timems.');
+				} else {
+					window.location.href = "'.$blogURL.'/'.$page.'/'.$valores.'";
+				}
+			};
+			setTimeout(countdown, 2000);
+		</script>
+		';
+    echo '<p>En <span class="" id="segundos">'.$time.'</span> segundos esta pagina se direccionara hacia la página '.' <a class="text-secondary" href="'.$blogURL.'/'.$page.'/'.$valores.'">'.$page.'</a>.</p>';
+	}
+	elseif(!$frontend) {
+		//Headers
+		header( "refresh:$time;url=".$blogURL."/$page/"."$valores" );
+	} else {
+		$timems = 0;
+		//Javascript
+		echo '<script>
+		setTimeout(() => {  window.location.href = "'.$blogURL.'/'.$page.'/'.$valores.'"; }, '.$timems.');
+		</script>';
+	}
+}
+/*
+*
+* Funcion que recibe un dato y un tipo, lo normaliza para la base de datos
+*
+*/
+function qtx_cleanData($dato_quartex, $type) {
+	$dato_quartex = trim($dato_quartex);
+	if ($type == 'localidad' || $type == 'domicilio' || $type =='moto_modelo' || $type == 'genero') {
+		// Limpia no-alfanumericos
+		$dato_limpio = preg_replace("/[^A-Za-zÁ-Úá-ú0-9\-. ]/", "", ucwords(strtolower($dato_quartex)));
+	} elseif ($type == 'nombre' || $type == 'apellido') {
+		$dato_limpio = preg_replace("/[^A-Za-zÁ-Úá-ú\-. ]/", "", ucwords(strtolower($dato_quartex)));
+	} elseif ($type == 'tel') {
+		// Limpia no-numericos
+		$dato_limpio = preg_replace('~\D~', '',$dato_quartex);
+		//Saco intval porque elimina digitos despues de los simbolos .-
+	} elseif ($type == 'dni' || $type == 'cuit') {
+		$dato_limpio = preg_replace('~\D~', '',$dato_quartex);
+	} elseif ($type == 'message') {
+		$dato_limpio = htmlspecialchars($dato_quartex, ENT_QUOTES);
+	} elseif ($type =='user_name') {
+		$dato_limpio = preg_replace('/[^A-Za-z0-9]/', '', $dato_quartex);
+	} elseif ($type =='post_type') {
+		$dato_limpio = preg_replace('/[^a-z0-9\_-]/', '', $dato_quartex);
+	} else {
+		$dato_limpio = 'error qtx_cleanData';
+	}
+	return $dato_limpio;
+}
 
+/*Helper para dni(normalize)*/
+function dni($str) {
+	/*Normalizar para DB*/
+	$dni = qtx_cleanData($str, 'dni');
+	return $dni;
+}
+
+/*Helper para cuit(normalize)*/
+function cuit($str) {
+	/*Normalizar para DB*/
+	$cuit = qtx_cleanData($str, 'cuit');
+	return $cuit;
+}
+/*Helper para cuit(normalize)*/
+function tel($str) {
+	/*Normalizar para DB*/
+	$tel = qtx_cleanData($str, 'tel');
+	return $tel;
+}
+/*Helper para nombre(normalize)*/
+function nombre($str) {
+	/*Normalizar para DB*/
+	$nombre = qtx_cleanData($str, 'nombre');
+	return $nombre;
+}
+
+/*Helper para apellido(normalize)*/
+function apellido($str) {
+	/*Normalizar para DB*/
+	$apellido = qtx_cleanData($str, 'apellido');
+	return $apellido;
+}
+
+/*Helper para domicilio(normalize)*/
+function domicilio($str) {
+	/*Normalizar para DB*/
+	$domicilio = qtx_cleanData($str, 'domicilio');
+	return $domicilio;
+}
+
+/*Helper para genero(normalize)*/
+function genero($str) {
+	/*Normalizar para DB*/
+	$genero = qtx_cleanData($str, 'genero');
+	return $genero;
+}
+
+/*Helper para localidad(normalize)*/
+function localidad($str) {
+	/*Normalizar para DB*/
+	$localidad = qtx_cleanData($str, 'localidad');
+	return $localidad;
+}
+
+/*Helper para localidad(normalize)*/
+function message($str) {
+	/*Normalizar para DB*/
+	$message = qtx_cleanData($str, 'message');
+	return $message;
+}
+
+/*Funcion para hacer legibles los datos al user*/
+function mostrarDNI($dni_integer) {
+	$dniformat = number_format(intval($dni_integer), 0, '', '.');
+	return $dniformat;
+}
+/*Helper para user_name(normalize)*/
+function user_name($str) {
+	/*Normalizar para DB*/
+	$user_name = qtx_cleanData($str, 'user_name');
+	return $user_name;
+}
+/*Helper para user_name(normalize)*/
+function post_type($str) {
+	/*Normalizar para DB*/
+	$post_type = qtx_cleanData($str, 'post_type');
+	return $post_type;
+}
 /*
 * Remove jetpack menu from dashboard
 */
