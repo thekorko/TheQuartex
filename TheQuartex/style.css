@@ -2308,6 +2308,13 @@ object {
     white-space: nowrap;
   }
 }
+.mce-window-body *, .mce-window-head *, .mce-foot * {
+  color: black !important;
+  font-family: inherit;
+}
+.media-modal * .wp-core-ui * {
+  color: #333333 !important;
+}
 @media screen and (min-width: 651px) {
   #home-area-top {
   }
@@ -2391,6 +2398,7 @@ object {
     display: none !important;
   }
 }
+
 @media screen and (max-width: 450px) {
   .main-posts {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
