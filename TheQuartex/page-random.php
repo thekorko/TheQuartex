@@ -18,15 +18,6 @@ get_header();
 	<?php	get_sidebar(); ?>
 	<main id="main" class="main-content">
 		<div id="main-posts" style="display:flex;">
-			<style>
-			#column-1 {
-				width: 50%;
-			}
-			#column-2 {
-				width: 50%;
-			}
-			</style>
-			<div id="column-1" class="main-posts" style="height:auto;overflow-y:visible;">
 			<?php
 			 $attachments = get_posts( array(
 									'post_type' => 'attachment',
@@ -36,6 +27,15 @@ get_header();
 									'exclude'     => get_post_thumbnail_id()
 							) );
 											if ( $attachments ) {
+												echo '<style>
+															#column-1 {
+																width: 50%;
+															}
+															#column-2 {
+																width: 50%;
+															}
+															</style>
+															<div id="column-1" class="main-posts" style="height:auto;overflow-y:visible;">';
 													foreach ( $attachments as $attachment ) {
 															//var_dump($attachment->post_mime_type);
 															$images = array('image/jpeg','image/png','image/gif','image/webp');
@@ -57,8 +57,18 @@ get_header();
 																qtx_echo_thumb_box($attachment->ID, $type, $class, $thumbimg, $attachment->post_mime_type);
 															}
 													}
+											echo "</div>";
+											} else {
+												echo '<style>
+															#column-1 {
+																width: 0px;
+															}
+															#column-2 {
+																width: 100%;
+															}
+															</style>';
 											} ?>
-					</div>
+
 <?php
 //categories
 //pre arguments
