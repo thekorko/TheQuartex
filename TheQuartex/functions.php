@@ -706,17 +706,124 @@ function rich_text_comment_form( $args ) {
  	       'buttons' => 'img,link,strong,em,del,li,block,close'
 	    )
 	) );
+	$hidden = '<input type="hidden" name="supertest" id="supertest" value="777">';
 	$args['comment_field'] = ob_get_clean();
 	return $args;
 }
-/*Hook into approved comments to send notification*/
-function show_message_function( $comment_ID, $comment_approved ) {
-    if( 1 === $comment_approved ){
-        //function logic goes Here
-				//TODO urgente
+/*Print notifiactions from comments
+/*ver 0.1*/
+function print_my_notifications() {
+	$my_uid = get_current_user_id();
+	$notifications = get_user_meta( $my_uid, 'notification', false );
+	foreach ($notifications as $key) {
+		$seen = $key['seen'];
+		if (!$seen) {
+			$type = $key['type'];
+			if ($type=='comment') {
+				$comm_post_id = $key['post_id'];
+				$comm_id = $key['comment_id'];
+				$op_uid = $key['op_uid'];
+				$comment_uid = $key['comment_uid'];
+				$replied_to = $key['replied_to'];
+				$notif_id = 0;
+				if ($replied_to==0) {
+					//var_dump($notifications);
+					$comment_url = get_permalink($comm_post_id)."?notif_seen=$notif_id#comment-$comm_id";
+					$user = get_userdata( $comment_uid );
+					$commenter_name = $user->display_name;
+					$user = get_userdata( $my_uid );
+					$my_name = $user->display_name;
+					$lang = pll_current_language();
+					if ($lang='es') {
+						$notification = "hey $my_name, el usuario $commenter_name comentó tu <a href='$comment_url'>post</a> ...";
+					} else {
+						$notification = "hey $my_name, the user $commenter_name commented in your <a href='$comment_url'>post</a> ...";
+					}
+					echo "$notification<br>";
+				} else {
+					$comment_url = get_permalink($comm_post_id)."?notif_seen=$notif_id#comment-$comm_id";
+					$user = get_userdata( $comment_uid );
+					$commenter_name = $user->display_name;
+					$user = get_userdata( $my_uid );
+					$my_name = $user->display_name;
+					$lang = pll_current_language();
+					if ($lang='es') {
+						$notification = "hey $my_name, el usuario $commenter_name respondió tu comentario <a href='$comment_url'>post</a> ...";
+					} else {
+						$notification = "hey $my_name, the user $commenter_name replied to your comment <a href='$comment_url'>post</a> ...";
+					}
+					echo "$notification<br>";
+				}
+			}
+		}
+	}
+	//var_dump($notifications);
+	// dummy data to better show the issue, we want to change the title of `coffee_id` 12
+}
+/*Hook into approved comments to send notification to the post owner
+/*ver 0.1*/
+function comment_notification( $comment_ID, $comment_approved, $commentdata ) {
+		//$debug = var_export($comentdata, true); or ob_start
+    if( 1 === $comment_approved ) {
+				//el uid del commenter
+				$my_uid = get_current_user_id();
+
+				//Si estamos respondiendo a un comment, tambien notificamos a ese uid
+				$replied_to = 0;
+				$replied_to_last = $replied_to;
+				//How many replies to check always sum 1
+				$loop = 2;
+				//Did we notified the op
+				$notified = false;
+				$comm_post_id = $commentdata['comment_post_ID'];
+				//obtenemos el id del op del post
+				/*$op_uid = get_the_author_meta('ID',$commentdata['comment_post_ID']);*/
+				$op_uid = get_post_field( 'post_author', $comm_post_id );
+				//check if we hav to notify a comment parent
+				$parent = $commentdata['comment_parent'];
+				//for every parent level we have to check, notify each one
+				for ($i=0; $i < $loop ; $i++) {
+					if (!false==$parent) {
+						//get the comm parent user id
+						$replied_to = get_comment( $parent )->user_id;
+						//check if not myself and check if im not sending a double notification to the user
+						if ($replied_to != $my_id && ($replied_to != $op_uid)) {
+							$parameters = array(
+									'post_id' => $comm_post_id, //post id for url building
+									'op_uid' => $op_uid, //post author id
+									'comment_uid' => $my_uid, //who commented
+									'replied_to' => $replied_to, //a comment author id i replied to
+									'comment_id' => $comment_ID, //the comment_id i just posted for url building
+									'seen' => 0, //to delete the notification
+									'type' => 'comment',
+							);
+							if ($i==0) {
+								$replied_to_last = $replied_to;
+							}
+							add_user_meta( $replied_to, 'notification', $parameters );
+						}
+					} else {
+						break;
+					}
+					$parent = get_comment( $parent )->comment_parent;
+				}
+				//check if not notifiying my own post
+				if ((!$notified) && ($op_uid != $my_uid)) {
+					$parameters = array(
+							'post_id' => $comm_post_id,
+							'op_uid' => $op_uid, //post author id
+							'comment_uid' => $my_uid,
+							'replied_to' => $replied_to_last,
+							'comment_id' => $comment_ID,
+							'seen' => 0,
+							'type' => 'comment',
+					);
+					add_user_meta( $op_uid, 'notification', $parameters );
+					$notified = true;
+				}
     }
 }
-add_action( 'comment_post', 'show_message_function', 10, 2 );
+add_action( 'comment_post', 'comment_notification', 10, 3 );
 // TODO: custom cache functionality
 /*
 * Authentication functions
