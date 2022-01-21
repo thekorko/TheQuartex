@@ -694,6 +694,7 @@ function qtx_user_info($userID = 0) {
 	//https://www.tutorialspoint.com/php/php_functions.htm
 }
 /*Comments with rich text editor*/
+/*Custom comment box ver 0.1*/
 add_filter( 'comment_form_defaults', 'rich_text_comment_form' );
 function rich_text_comment_form( $args ) {
 	ob_start();
@@ -711,10 +712,13 @@ function rich_text_comment_form( $args ) {
 	return $args;
 }
 /*Print notifiactions from comments
-/*ver 0.1*/
-function print_my_notifications() {
+/*Notification Select and Print ver 0.2*/
+function print_my_notifications($notification_id = 0) {
 	$my_uid = get_current_user_id();
 	$notifications = get_user_meta( $my_uid, 'notification', false );
+	//Nothing to show
+	$haveNotifications = false;
+	$count = 0;
 	foreach ($notifications as $key) {
 		$seen = $key['seen'];
 		if (!$seen) {
@@ -722,46 +726,67 @@ function print_my_notifications() {
 			if ($type=='comment') {
 				$comm_post_id = $key['post_id'];
 				$comm_id = $key['comment_id'];
+				//Notificated, delete notification
+				if ($notification_id != 0 && $comm_id == $notification_id) {
+					delete_user_meta( $my_uid, 'notification', $key );
+					//Delete the notification, don't show it(skip all bellow), and continue the next iteration.
+					continue;
+				}
+				$count++;
 				$op_uid = $key['op_uid'];
 				$comment_uid = $key['comment_uid'];
 				$replied_to = $key['replied_to'];
-				$notif_id = 0;
+				//Maybe this enough?
+				$notif_id = "$comm_id";
 				if ($replied_to==0) {
 					//var_dump($notifications);
-					$comment_url = get_permalink($comm_post_id)."?notif_seen=$notif_id#comment-$comm_id";
+					$comment_url = get_permalink($comm_post_id)."?notification=$notif_id#comment-$comm_id";
 					$user = get_userdata( $comment_uid );
 					$commenter_name = $user->display_name;
 					$user = get_userdata( $my_uid );
 					$my_name = $user->display_name;
 					$lang = pll_current_language();
+					$post_title = get_the_title($comm_post_id);
 					if ($lang='es') {
-						$notification = "hey $my_name, el usuario $commenter_name comentó tu <a href='$comment_url'>post</a> ...";
+						$notification = "hey $my_name, el usuario $commenter_name comentó tu <a href='$comment_url'>post $post_title</a> ...";
 					} else {
-						$notification = "hey $my_name, the user $commenter_name commented in your <a href='$comment_url'>post</a> ...";
+						$notification = "hey $my_name, the user $commenter_name commented in your <a href='$comment_url'>post $post_title</a> ...";
 					}
 					echo "$notification<br>";
 				} else {
-					$comment_url = get_permalink($comm_post_id)."?notif_seen=$notif_id#comment-$comm_id";
+					$comment_url = get_permalink($comm_post_id)."?notification=$notif_id#comment-$comm_id";
 					$user = get_userdata( $comment_uid );
 					$commenter_name = $user->display_name;
 					$user = get_userdata( $my_uid );
 					$my_name = $user->display_name;
 					$lang = pll_current_language();
 					if ($lang='es') {
-						$notification = "hey $my_name, el usuario $commenter_name respondió tu comentario <a href='$comment_url'>post</a> ...";
+						$notification = "hey $my_name, el usuario $commenter_name respondió tu comentario en el <a href='$comment_url'>post</a> ...";
 					} else {
-						$notification = "hey $my_name, the user $commenter_name replied to your comment <a href='$comment_url'>post</a> ...";
+						$notification = "hey $my_name, the user $commenter_name replied to your comment in a <a href='$comment_url'>post</a> ...";
 					}
 					echo "$notification<br>";
 				}
 			}
 		}
 	}
+	if (isset($notification)) {
+		$haveNotifications = $count;
+	} else {
+		$lang = pll_current_language();
+		if ($lang='es') {
+			$notification = "Nada nuevo por aquí, postea algo!";
+		} else {
+			$notification = "Nothing new over here, maybe post something";
+		}
+		echo "$notification<br>";
+	}
+	return $haveNotifications;
 	//var_dump($notifications);
 	// dummy data to better show the issue, we want to change the title of `coffee_id` 12
 }
 /*Hook into approved comments to send notification to the post owner
-/*ver 0.1*/
+/*Append notifications from comment activity ver 0.1*/
 function comment_notification( $comment_ID, $comment_approved, $commentdata ) {
 		//$debug = var_export($comentdata, true); or ob_start
     if( 1 === $comment_approved ) {
