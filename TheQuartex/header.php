@@ -49,17 +49,56 @@
 			</div>
 
 			<div class="profile" style="padding-left: 1rem;">
-				<?php
-				if (!is_user_logged_in()) { ?>
+				<?php if (!is_user_logged_in()) :?>
 					<button id="login-button-head" onclick="togglemenu('user-area')"><i class="fas fa-sign-in-alt"></i> <?php qtx_string_e("Login"); ?></button>
 					<div id="user-area" class="base-box" style="position:absolute; display:none; padding: 1rem; border-radius: 7px; border: solid 2px black;">
+				<?php else :?>
 				<?php
-			} else {
+				$isSetNotification = isset($_GET['notification']) && !empty(intval($_GET['notification']));
+				if ($isSetNotification) {
+					$notification_id = intval($_GET['notification']);
+					$my_uid = get_current_user_id();
+					/*
+					$notification_id = preg_replace("/[^a-z0-9\-]/", "", $_GET['notification']);
+					$notification_id = array_explode('-', $notification_id)
+					$comm_post_id =
+					$op_uid =
+					$replied_to_last =
+					$commenter_uid =
+					$notification_id =
+					$seen =
+					$type =
+					$parameters = array(
+							'post_id' => $comm_post_id,
+							'op_uid' => $op_uid, //post author id
+							'comment_uid' => $commenter_uid,
+							'replied_to' => $replied_to_last,
+							'comment_id' => $notification_id,
+							'seen' => 0,
+							'type' => 'comment',
+					);
+					delete_user_meta( $my_uid, 'notification', $parameters );*/
+				} else {
+					$notification_id = 0;
+				}
 				?>
 				<div id="user-area" class="" style="padding-top:1rem;">
-				<?php
-			}
-				?>
+					<button id="login-button-head" onclick="togglemenu('notification-area')"><i class="fas fa-bell"></i> <?php qtx_string_e("Notifications"); ?><span id="notif_count"></span></button>
+					<div id="notification-area" class="base-box" onload="notif_number()" style="position:absolute; display:none; padding: 1rem; border-radius: 7px; border: solid 2px black;">
+						<?php $haveNotifications = print_my_notifications($notification_id);
+						if (!$haveNotifications) {
+							$haveNotifications = 0;
+						}
+						echo '
+						<script>
+							var el_notif_number = document.getElementById("notif_count");
+							value = "('.$haveNotifications.')";
+							el_notif_number.innerHTML = String( value );
+						</script>';
+						?>
+
+					</div>
+				<?php endif; ?>
 					<?php get_sidebar('user-area'); ?>
 					<a href="<?php get_permalink(); ?>?random=yes"><button style="font-size:10px" class="search-submit">Get lucky!</button></a>
 				</div>
