@@ -54,30 +54,13 @@
 					<div id="user-area" class="base-box" style="position:absolute; display:none; padding: 1rem; border-radius: 7px; border: solid 2px black;">
 				<?php else :?>
 				<?php
+				/*
+				* Notifications Alert ver 0.1
+				*/
 				$isSetNotification = isset($_GET['notification']) && !empty(intval($_GET['notification']));
 				if ($isSetNotification) {
 					$notification_id = intval($_GET['notification']);
 					$my_uid = get_current_user_id();
-					/*
-					$notification_id = preg_replace("/[^a-z0-9\-]/", "", $_GET['notification']);
-					$notification_id = array_explode('-', $notification_id)
-					$comm_post_id =
-					$op_uid =
-					$replied_to_last =
-					$commenter_uid =
-					$notification_id =
-					$seen =
-					$type =
-					$parameters = array(
-							'post_id' => $comm_post_id,
-							'op_uid' => $op_uid, //post author id
-							'comment_uid' => $commenter_uid,
-							'replied_to' => $replied_to_last,
-							'comment_id' => $notification_id,
-							'seen' => 0,
-							'type' => 'comment',
-					);
-					delete_user_meta( $my_uid, 'notification', $parameters );*/
 				} else {
 					$notification_id = 0;
 				}
@@ -89,6 +72,7 @@
 						if (!$haveNotifications) {
 							$haveNotifications = 0;
 						}
+						//Affect the number en the button
 						echo '
 						<script>
 							var el_notif_number = document.getElementById("notif_count");
