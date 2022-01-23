@@ -112,6 +112,7 @@ $homeURL = home_url();
 						$counter++;
 					}
 				}
+				//TODO make a file? or cache
 				//print_r($excludedcats);
 
 				$post_query_args = array(
