@@ -138,9 +138,8 @@ if ( post_password_required() or (is_singular('extfeed') && !comments_open()) ) 
 	</h2><!-- .comments-title -->
 </div>
 <div id="comments" class="comments-area">
-		<div id="comment-box" class="comment-box">
-			<?php if ( have_comments() ): ?>
-
+	<div id="comment-box" class="comment-box">
+	<?php if ( have_comments() ): ?>
 			<?php the_comments_navigation(); ?>
 		<ol class="comment-list">
 			<?php
@@ -156,6 +155,7 @@ if ( post_password_required() or (is_singular('extfeed') && !comments_open()) ) 
 			?>
 		</ol><!-- .comment-list -->
 		<?php the_comments_navigation(); ?>
+	<?php endif; //if have commments ?>
 		<div id="comments-login" class="comments-login">
 			<?php if ( ! comments_open() ) : ?>
 			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'TheQuartex' ); ?></p>
@@ -180,5 +180,3 @@ if ( post_password_required() or (is_singular('extfeed') && !comments_open()) ) 
 	<?php endif; //comment count ?>
 	</div>
 </div>
-
-<?php endif; //if have commments ?>
