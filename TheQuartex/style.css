@@ -790,6 +790,7 @@ textarea {
   border: 2px solid #ccc;
   border-radius: 3px;
   padding: 3px;
+  width: 100%;
 }
 
 input[type="text"]:focus,
@@ -1566,6 +1567,7 @@ object {
   padding: 2px;
   padding-left: 15px;
   margin: 4px;
+  display: grid;
 }
 .qtx-logo:hover {
   background: rgba(19, 112, 185, 0.1);
@@ -1894,7 +1896,53 @@ object {
   height: 100%;
   object-fit: contain;
 }
-
+/*Post box upvotes ver 0.1*/
+  #bot-toolbar-row {
+    display:flex;
+    margin-top:-30px;
+    justify-content:left;
+  }
+  #bot-toolbar-row div {
+    width: 100%;
+    display:flex;
+    justify-content:right;
+  }
+  #bot-toolbar-row img,i {
+    font-size: 18px;
+    height:18px;
+    width:auto;
+  }
+  @media screen and (min-width: 768px) {
+    #bot-toolbar-row * {
+      opacity: 0.5;
+    }
+    #bot-toolbar-row:hover * {
+      opacity: 1;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    #bot-toolbar-row * {
+      opacity: 0.8;
+    }
+    .wp-pagenavi * {
+      font-size: 14px;
+    }
+  }
+  #bot-toolbar-row button {
+    border-radius: 3px;
+  }
+  #top-toolbar-row {
+    display:flex;
+    margin-bottom:-35px;
+    justify-content:right;
+  }
+  #top-toolbar-row img {
+    height:10px;
+    width:auto;
+  }
+  #top-toolbar-row button {
+    border-radius: 3px;
+  }
 /*Buddypress header */
 #header-cover-image {
   background-color: transparent !important;
