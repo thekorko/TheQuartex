@@ -100,7 +100,74 @@ if ( ! function_exists( 'thequartex_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'thequartex_setup' );
 
-
+/*Enqueue my custom jquery, as an ajax script
+Also localize, create_nonce and register de ajax url
+Ver 0.1
+wp_enqueue_script is for the frontend there are other options
+*/
+add_action( 'wp_enqueue_scripts', 'my_enqueue' );
+function my_enqueue() {
+	/*
+		if it's a plugin pass $hook through this function
+   if ( 'myplugin_settings.php' !== $hook ) {
+      return;
+   }
+	 */
+   wp_enqueue_script(
+      'ajax-script',
+      get_template_directory_uri() . '/js/myjquery.js',
+      array( 'jquery' ),
+      '1.0.0',
+      true
+   );
+   $upvote_nonce = wp_create_nonce( 'upvote_example' );
+   wp_localize_script(
+      'ajax-script',
+      'my_ajax_obj',
+      array(
+         'ajax_url' => admin_url( 'admin-ajax.php' ),
+         'nonce'    => $upvote_nonce,
+      )
+   );
+}
+/*
+Response for upvote/downvote karma ver 0.2
+*/
+add_action( 'wp_ajax_karma_handler', 'my_karma' );
+function my_karma() {
+	 //check if user has voted already
+   check_ajax_referer( 'upvote_example' );
+	 $my_post = intval($_POST['post_id']);
+	 $my_action = htmlspecialchars($_POST['my_action'], ENT_QUOTES);
+	 if (!$my_action=="up" || !$my_action=="down") {
+		 $post_meta = "False";
+		 echo $post_meta;
+	 } else {
+		 if ($my_post>0) {
+			 $post_meta = get_post_meta( $my_post, 'karma', true);
+			 if (!$post_meta or $post_meta==0) {
+				 if ($my_action=="up") {
+					 $post_meta = 1;
+				 } else {
+					 $post_meta = -1;
+				 }
+			 $update = add_post_meta($my_post, 'karma', $post_meta, true);
+			 } else {
+				 if ($my_action=="up") {
+					 $post_meta = intval($post_meta)+1;
+				 } else {
+					 $post_meta = intval($post_meta)-1;
+				 }
+				$update = update_post_meta( $my_post, 'karma', $post_meta);
+			 }
+			 echo $post_meta;
+		 } else {
+			 $post_meta = "False";
+			 echo $post_meta;
+		 }
+	 }
+   wp_die(); // all ajax handlers should die when finished
+}
 /* TODO disable site kit,adsense and monsterinsights on private pages
 if (!qtx_is_staff()) {
 	$network_wide = True;
@@ -500,9 +567,13 @@ function qtx_echo_thumb_box($id, $type, $class, $thumbimg, $mimetype) { ?>
 	</a> <!--link to the post-->
 <?php
 }
-
+/*qtx_echo_post ver 0.1*/
 function qtx_echo_post_box($j, $type) { ?>
 	<!--div clickeable-->
+	<div class="post-box-wrapper">
+		<!--<div id="top-toolbar-row" class="row" style="">
+				<button><img title="Vote destroy/Exterminar" alt="X" id="x-destroy" src="<?php //echo get_template_directory_uri(); ?>/img/destroy.png"></button>
+		</div>-->
 	<a href="<?php the_permalink() ?>" title="<?php printf(__('Descargar %s', 'kubrick'), the_title_attribute('echo=0')); ?>">
 	<div id="post-<?php echo($j) ?>" class="base-box post-box post-<?php echo($type); ?>"> <!-- This is the main box for each post within the post loop -->
 			<!--End of the upper toolbar -->
@@ -515,14 +586,12 @@ function qtx_echo_post_box($j, $type) { ?>
 					<?php
 						/** This should be rewritten as a function, because we will need more tweaking for the titles, and should be generalistic, so we can apply it to post_excerpt */
 						global $post;
+						$post_id = $post->ID;
 						if (strlen($post->post_title) > 52) {
-
-						echo substr(the_title($before = '', $after = '', FALSE), 0, 52) . '...'; } else {
-
-						the_title();
-
+							echo substr(the_title($before = '', $after = '', FALSE), 0, 52) . '...';
+						} else {
+							the_title();
 						}
-
 					?>
 				</center>
 			</div>
@@ -541,6 +610,22 @@ function qtx_echo_post_box($j, $type) { ?>
 	</div>
 	<!--div clickeable-->
 	</a> <!--link to the post-->
+
+	<div id="bot-toolbar-row" class="row"> <!-- This is the toolbar row for each post box -->
+		<?php
+			$post_puntos = get_post_meta($post_id, 'karma', true);
+			if (!$post_puntos) {
+				$post_puntos = 0;
+			}
+		?>
+			<button id="up" class="upvote karmavote" value="up-<?=$post_id?>"><i title="Like" alt="Karma up" style="color:green;" class="far fa-arrow-alt-circle-up"></i></button>
+			<button id="down" class="downvote karmavote" value="down-<?=$post_id?>"><i title="Dislike" alt="Karma down" style="color:red;" class="far fa-arrow-alt-circle-down"></i></button>
+			<span id="post-karma-<?=$post_id?>"><?=$post_puntos?></span>
+			<div>
+				<button><img title="Premio" alt="Premio" src="<?php echo get_template_directory_uri(); ?>/img/skull.png"></button>
+			</div>
+	</div>
+	</div>
 <?php
 }
 
@@ -696,6 +781,7 @@ function qtx_user_info($userID = 0) {
 /*Comments with rich text editor*/
 /*Custom comment box ver 0.1*/
 add_filter( 'comment_form_defaults', 'rich_text_comment_form' );
+//To use this need to sidable akismet because it flags html content as cleared comment
 function rich_text_comment_form( $args ) {
 	ob_start();
 	wp_editor( '', 'comment', array(
