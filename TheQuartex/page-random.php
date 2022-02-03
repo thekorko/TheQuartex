@@ -108,7 +108,7 @@ $post_query_args = array(
 
 	// the query
 	$the_query = new WP_Query($post_query_args); ?>
-	<div id="column-1" class="main-posts" style="height:auto;overflow-y:visible;">
+	<div id="column-2" class="main-posts" style="height:auto;overflow-y:visible;">
 	<?php if ( $the_query->have_posts() ) : ?>
 	    <!-- pagination here -->
 	    <!-- the loop -->
