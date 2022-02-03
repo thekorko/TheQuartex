@@ -8,6 +8,7 @@
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
  * @package TheQuartex
+ * @version 0.1
  */
 
 ?>
@@ -35,10 +36,18 @@
 			</div>
 
 			<div class="qtx-logo" id="button-logo">
+				<center>
 				<?php
-				the_custom_logo();
+					the_custom_logo();
+					$frases = get_template_directory()."/frases.txt";
+					/*Get a random phrase for the logo ver 0.1*/
+    			$f_contents = file($frases);
+    			$line = $f_contents[rand(0, count($f_contents) - 1)];
 				?>
+				<span style="font-size:8px;"><?=$line?></span>
+				</center>
 			</div>
+
 
 			<div class="nav" id="head-extra">
 				<?php get_sidebar('header-navbar-area'); ?>
