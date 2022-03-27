@@ -528,10 +528,12 @@ function qtx_echo_thumb_box($id, $type, $class, $thumbimg, $mimetype) { ?>
 				<center>
 					<?php echo(qtx_category_icon()); ?>
 					<?php
-						/** This should be rewritten as a function, because we will need more tweaking for the titles, and should be generalistic, so we can apply it to post_excerpt */
+						//This should be rewritten as a function, because we will need more tweaking for the titles, and should be generalistic, so we can apply it to post_excerpt
 						//global $post;
 						//if (strlen($post->post_title) > 52) {
-						/*TODO fix, function the_title doesn't support passing an $ID*/
+						/*
+						TODO fix, function the_title doesn't support passing an $ID
+						*/
 						echo(get_the_title($id));
 						//echo substr(the_title($before = '', $after = '', FALSE), 0, 52) . '...'; } else {
 						//the_title();
