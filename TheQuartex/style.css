@@ -1712,7 +1712,7 @@ object {
 }
 
 .old-break-eyes {
-  color: #ff107f;
+  /*color: #ff107f;*/
   text-shadow: 3px 2px 0 #dad0c0, 5px 4px 0 rgba(0, 0, 0, 0.15);
   font-family: "Rubik", sans-serif;
   font-size: 1.4rem;
