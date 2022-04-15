@@ -13,6 +13,7 @@ Template Name: create-post
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
  * @package TheQuartex
+ * @version 0.1
  *
  */
 
@@ -65,7 +66,7 @@ Template Name: create-post
               $review_roles = array('qtx_noob', 'subscriber', );
 
               //Old post fomr from wpuf
-              if (empty($post_type)) {
+              if (empty($post_type) || (!qtx_is_admin() && !empty($post_type))) {
                 if ((array_intersect($publish_roles, $user->roles))) {
                   //post form
                   echo do_shortcode( "[wpuf_form id='629']" );
@@ -77,7 +78,8 @@ Template Name: create-post
                   echo do_shortcode( "[wpuf_form id='880']" );
                 }
 
-              } else {
+              } elseif(qtx_is_admin() && !empty($post_type)) {
+                //TODO finish this editor
                 //Switcdh case of form type, form type is based on the post_type we are dealing with
                 $editor_class = "wp-core-ui wp-editor-wrap tmce-active";
                 $editor_name = "post_form";
@@ -97,12 +99,6 @@ Template Name: create-post
                             'editor_class'  => $editor_class,
                             'textarea_name' => $editor_name,
                         ];
-                        break;
-                    case 1:
-                        echo "i equals 1";
-                        break;
-                    case 2:
-                        echo "i equals 2";
                         break;
                     default:
                     $editor_settings = [
