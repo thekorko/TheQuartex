@@ -79,11 +79,11 @@ Template Name: Donations
               <p>Sí el botón no te funciona te dejo el link de <a alt="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d70946c017d89a478cd0d7a" href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d70946c017d89a478cd0d7a">MercadoPago</a></p>
               <p>El dinero recibido se utilizara para QuartexNet, en especial para gastos del servidor. Muchísimas Gracias por tu colaboración.</p>
               <p>Otra opción sería invitarme un cafecito usando esta app que está genial <a href='https://cafecito.app/thekorko'>CafecitoAPP</a></p>
-              <p>Sí preferis hacer una donación por transferencia este es mi CVU: <b>0000003100057622104867</b></p>
+              <p>Sí preferis hacer una donación por transferencia de CVU/CBU escríbime por discord: <strong>thekorko#5622</strong></p>
               <p>Por el momento, no hay rangos, ni puntos, ni recompensas establecidas. Estoy maquinando algún tipo de sistema de recompensas, pero hay mucho trabajo que hacer.  Ósea que en un futuro va a haber un boton re copado de sub, ahí arriba.</p>
               <p>De todas formas, <b>si donás hablame por discord</b> y seguramente te programo algún <b>premio</b> dentro de la web.</p>
-              <p>Sí todavía no tenés billetera en Ripio y me queres regalar un referido te dejo mi link: <a href='https://join.ripio.com/ref/guillermosebastian_s_4'>Ripio App</a> por cada uno me dan alrededor de (150RPC) cada RCP vale como 2 pesos y algo, así que bueno es algo.<br>Además si te vas a registrar en ripio pódes hacer las misiones, con una inversión de alrededor de <b>$15000<b> pódes hasta duplicarlo los días en que el RPC vale alrededor de AR$4.</p>
-              <p>De momento eso es todo, estoy configurando una cuenta de Paypal, y billeteras de cryto realmente no uso. Si se te ocurre otro medio de pago, comentame por discord. </p>
+              <p>Sí todavía no tenés billetera en Ripio y me queres regalar un referido te dejo mi link: <a href='https://join.ripio.com/ref/guillermosebastian_s_4'>Ripio App</a> por cada uno me dan alrededor de (150RPC) cada RCP vale como 2 pesos y algo, así que bueno es algo.<br>Además si te vas a registrar en ripio pódes hacer las misiones de la app.</p>
+              <p>De momento eso es todo, tengo una cuenta paypal, si me queres donar por ahi, lo mismo escribíme al discord, y billeteras de cryto realmente no uso. Si se te ocurre otro medio de pago, comentame por discord. </p>
               <p>Cualquier duda te dejo mi discord: <strong>thekorko#5622</strong></p>
               <p>Discord de QTX: <a href="https://discord.gg/rQMxNBCq">https://discord.gg/rQMxNBCq</a></p>
               <p>Comunidad: <a href="https://quartex.net/es/comunidad/">https://quartex.net/es/comunidad/</a></p>

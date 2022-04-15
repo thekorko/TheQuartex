@@ -39,6 +39,7 @@
 				<center>
 				<?php
 					the_custom_logo();
+					echo "<br>";
 					$frases = get_template_directory()."/frases.txt";
 					/*Get a random phrase for the logo ver 0.1*/
     			$f_contents = file($frases);
