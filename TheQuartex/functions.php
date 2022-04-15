@@ -184,12 +184,13 @@ function my_karma() {
 				 /**
 				 	* First, the condition for when no favorite_coffee user meta data exists
 					**/
-				 $doSearch = true;
 				 if (empty($sender_voted_posts)) {
 				 	$new_sender_voted_posts = array( $parameters );
 				 	add_user_meta( $user_sender, $voted_posts, $parameters);
 					$doSearch = false;
-				 }
+				} else {
+					$doSearch = true;
+				}
 				 /**
 				 * Second, the condition for when some favorite_coffee user_meta data already exists
 				 **/
@@ -664,18 +665,18 @@ function qtx_echo_post_box($j, $type) { ?>
 	<!--div clickeable-->
 	</a> <!--link to the post-->
 
-	<div id="bot-toolbar-row" class="row"> <!-- This is the toolbar row for each post box -->
+	<div id="post-toolbar-bottom" class="row"> <!-- This is the toolbar row for each post box -->
 		<?php
 			$post_puntos = get_post_meta($post_id, 'karma', true);
 			if (!$post_puntos) {
 				$post_puntos = 0;
 			}
 		?>
-			<button id="up" class="upvote karmavote" value="up-<?=$post_id?>"><i title="Like" alt="Karma up" style="color:green;" class="far fa-arrow-alt-circle-up"></i></button>
-			<button id="down" class="downvote karmavote" value="down-<?=$post_id?>"><i title="Dislike" alt="Karma down" style="color:red;" class="far fa-arrow-alt-circle-down"></i></button>
+			<button id="up" class="upvote karmavote" value="up-<?=$post_id?>"><i title="Like" alt="Karma up" style="color:green;" class="far fa-arrow-alt-circle-up small-karma "></i></button>
+			<button id="down" class="downvote karmavote" value="down-<?=$post_id?>"><i title="Dislike" alt="Karma down" style="color:red;" class="far fa-arrow-alt-circle-down small-karma "></i></button>
 			<span id="post-karma-<?=$post_id?>"><?=$post_puntos?></span>
 			<div>
-				<button><img title="Premio" alt="Premio" src="<?php echo get_template_directory_uri(); ?>/img/skull.png"></button>
+				<button><img class="small-karma" title="Premio" alt="Premio" src="<?php echo get_template_directory_uri(); ?>/img/skull.png"></button>
 			</div>
 	</div>
 	</div>
