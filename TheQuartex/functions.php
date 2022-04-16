@@ -132,6 +132,41 @@ function my_enqueue() {
    );
 }
 /*
+handler for the update/add of karma to post 0.4
+*/
+function qtx_update_karmaPost($post_meta,$my_post,$my_action,$change=false) {
+	if (!$post_meta) {
+		if ($my_action=="up") {
+			$post_meta = 1;
+		} else {
+			$post_meta = -1;
+		}
+		$update = add_post_meta($my_post, 'karma', $post_meta, true);
+	} else {
+		$x=$post_meta;
+		$act=$my_action;
+		//if the user changes it's mind (post is 0 on start, if you up, now is one, otherwise it's -1, so this is the logic here)
+		if ((($x==1&&$act="down") || ($x==-1&&$act="up"))&&$change) {
+			//An up/down can't ve reverted just can be changed
+			if ($my_action=="up") {
+				//now is 1
+				$post_meta = intval($post_meta)+2;
+			} else {
+				//now it's -1
+				$post_meta = intval($post_meta)-2;
+			}
+		} else {
+			if ($my_action=="up") {
+				$post_meta = intval($post_meta)+1;
+			} else {
+				$post_meta = intval($post_meta)-1;
+			}
+		}
+	 $update = update_post_meta( $my_post, 'karma', $post_meta);
+	}
+	return $post_meta;
+}
+/*
 Response for upvote/downvote karma ver 0.3
 */
 add_action( 'wp_ajax_karma_handler', 'my_karma' );
@@ -141,77 +176,61 @@ function my_karma() {
 	 $my_post = intval($_POST['post_id']);
 	 $my_action = htmlspecialchars($_POST['my_action'], ENT_QUOTES);
 	 if (!$my_action=="up" || !$my_action=="down") {
+		 //Not a valid action
 		 $post_meta = "False";
 		 echo $post_meta;
 	 } else {
-		 $voted_posts = "voted_posts";
-		 $karma_points = "karma_points";
-		 $user_sender = get_current_user_id();
-		 //I expect an array or empty, or empty array
-		 $sender_voted_posts = get_user_meta( $user_sender, $voted_posts, false );
-		 //Expect an integer(positive) or empty
-		 $user_sender_points = get_user_meta( $user_sender, $karma_points, false );
-		 //If user is not into the system we set it's starting points
-		 if (empty($user_sender_points) && !($user_sender_points==0 || $user_sender_points<0)) {
-		 	$user_sender_points = 100;
-			add_user_meta( $user_sender, 'karma_points', $user_sender_points);
-		 }
 		 if ($my_post>0) {
-			 //Did the user already voted this post?
-			 if (empty($sender_voted_posts) || !array_key_exists($my_post,$sender_voted_posts)) {
-				 $post_meta = get_post_meta( $my_post, 'karma', true);
-				 if (!$post_meta or $post_meta==0) {
-					 if ($my_action=="up") {
-						 $post_meta = 1;
-					 } else {
-						 $post_meta = -1;
-					 }
-				 $update = add_post_meta($my_post, 'karma', $post_meta, true);
-				 } else {
-					 if ($my_action=="up") {
-						 $post_meta = intval($post_meta)+1;
-					 } else {
-						 $post_meta = intval($post_meta)-1;
-					 }
-					$update = update_post_meta( $my_post, 'karma', $post_meta);
-				 }
-				 $post_key = $my_post;
-				 /* Since ver karma 0.3, records if the request sender user, already voted a post, and what action, overwrites action on update */
-				 $parameters = array(
-    	 		'post_id' => $my_post,
-    			'action' => $my_action,
-				 );
-				 /**
-				 	* First, the condition for when no favorite_coffee user meta data exists
-					**/
-				 if (empty($sender_voted_posts)) {
-				 	$new_sender_voted_posts = array( $parameters );
-				 	add_user_meta( $user_sender, $voted_posts, $parameters);
-					$doSearch = false;
-				} else {
-					$doSearch = true;
-				}
-				 /**
-				 * Second, the condition for when some favorite_coffee user_meta data already exists
-				 **/
-				 // search recursively through records returned from get_user_meta for the record you want to replace, as identified by `coffee_id` - credit: http://php.net/manual/en/function.array-search.php#116635
-				 if ($doSearch) {
-					 	$search_post_id = array_search( $parameters['post_id'], array_column( $sender_voted_posts, 'post_id' ) );
-					 if ( false === $search_post_id ) {
-					 	// add if the wp_usermeta meta_key[favorite_coffee] => meta_value[ $parameters[ $coffee_id ] ] pair does not exist
-					 	add_user_meta( $user_sender, $voted_posts, $parameters );
-					 } else {
-						 //add points to users
-					 	// update if the wp_usermeta meta_key[favorite_coffee] => meta_value[ $parameters[ $coffee_id ] ] pair already exists
-					 	update_user_meta( $user_sender, $voted_posts, $parameters, $sender_voted_posts[ $search_post_id ] );
-					 }
-				 }
-				 echo $post_meta;
-			 } else {
-				 //This user already voted this.
-				 $post_meta = "False";
-				 echo $post_meta;
+			 //A valid post
+			 $voted_posts = "voted_posts";
+			 $karma_points = "karma_points";
+			 $user_sender = get_current_user_id();
+			 //I expect an array or empty, or empty array
+			 $sender_voted_posts = get_user_meta( $user_sender, $voted_posts, false );
+			 //Expect an integer(positive) or empty
+			 $user_sender_points = get_user_meta( $user_sender, $karma_points, false );
+			 //If user is not into the system we set it's starting points
+			 if (empty($user_sender_points) && !($user_sender_points==0 || $user_sender_points<0)) {
+				$user_sender_points = 100;
+				add_user_meta( $user_sender, 'karma_points', $user_sender_points);
 			 }
+			 $post_meta = get_post_meta( $my_post, 'karma', true);
+			 /* Since ver karma 0.3, records if the request sender user, already voted a post, and what action, overwrites action on update */
+			 $parameters = array(
+				'post_id' => $my_post,
+				'action' => $my_action,
+			 );
+			 //Did the user already voted this post?
+			 if (empty($sender_voted_posts)) {
+				 //the user has never voted a post
+				$new_sender_voted_posts = array( $parameters );
+				add_user_meta( $user_sender, $voted_posts, $parameters);
+				$post_meta = qtx_update_karmaPost($post_meta,$my_post,$my_action);
+			 } else {
+				 //The user has voted a post before
+				 $search_post_id = array_search( $parameters['post_id'], array_column( $sender_voted_posts, 'post_id' ) );
+				 //print_r($search_post_id);
+				 //wait for the server to process the previous request
+				 sleep(1);
+				 if ( false === $search_post_id ) {
+					 //User has not voted this post
+					// add if the wp_usermeta meta_key[favorite_coffee] => meta_value[ $parameters[ $coffee_id ] ] pair does not exist
+					add_user_meta( $user_sender, $voted_posts, $parameters );
+
+					$post_meta = qtx_update_karmaPost($post_meta,$my_post,$my_action);
+				 } else {
+					 //add points to users author of the post
+					 // update if the wp_usermeta meta_key[favorite_coffee] => meta_value[ $parameters[ $coffee_id ] ] pair already exists
+					 //print_r($sender_voted_posts[$search_post_id]['action']);
+					 //print_r($my_action);
+					 if ($sender_voted_posts[$search_post_id]['action']!=$my_action) {
+						$change = true;
+					 	$post_meta = qtx_update_karmaPost($post_meta,$my_post,$my_action,$change);
+						update_user_meta( $user_sender, $voted_posts, $parameters, $sender_voted_posts[ $search_post_id ] );
+					 }
+				 }
+			 }
+			 echo $post_meta;
 		 } else {
 			 //Not a valid post
 			 $post_meta = "False";
