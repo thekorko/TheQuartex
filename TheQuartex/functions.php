@@ -216,7 +216,6 @@ function my_karma() {
 					 //User has not voted this post
 					// add if the wp_usermeta meta_key[favorite_coffee] => meta_value[ $parameters[ $coffee_id ] ] pair does not exist
 					add_user_meta( $user_sender, $voted_posts, $parameters );
-
 					$post_meta = qtx_update_karmaPost($post_meta,$my_post,$my_action);
 				 } else {
 					 //add points to users author of the post
