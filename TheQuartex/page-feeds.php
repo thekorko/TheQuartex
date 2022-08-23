@@ -42,7 +42,6 @@ Template Name:  Feeds & Cate list template
  	<?php get_sidebar(); ?>
  	<main id="main" class="main-content">
  	<div id="single-page" class="base-box singlepost-box">
-
       <?php
       while ( have_posts() ) :
         the_post(); ?>

@@ -15,10 +15,7 @@ Template Name: index0r
 
  */
 
-
-//TODO fix col-md-5
 get_header();
-
 ?>
 
 	<div id="primary" class="row"> <!--Primary content area, sidebar, content, posts, galleries,etc--><!--class="content-area"-->
@@ -111,34 +108,10 @@ get_header();
 	} ?>
 	</div>
 	<?php get_template_part( 'template-parts/large-box' ); ?>
-
-
-
-
-
-
-
-
 	<?php endif; ?>
 
-
-
-
-
-
-
 			</div><!-- #main-posts -->
-
 		</main><!-- #main -->
-
-
-
-
-
 	</div><!-- #primary -->
-
-
-
 <?php
-
 get_footer();

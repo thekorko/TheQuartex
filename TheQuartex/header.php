@@ -37,33 +37,23 @@
 
 			<div class="qtx-logo" id="button-logo">
 				<center>
-				<?php
-					the_custom_logo();
-					echo "<br>";
-					$frases = get_template_directory()."/frases.txt";
-					/*Get a random phrase for the logo ver 0.1*/
-    			$f_contents = file($frases);
-    			$line = $f_contents[rand(0, count($f_contents) - 1)];
-				?>
-				<span style="font-size:8px;"><?=$line?></span>
+				<?php the_custom_logo(); ?>
 				</center>
 			</div>
-
 
 			<div class="nav" id="head-extra">
 				<?php get_sidebar('header-navbar-area'); ?>
 			</div>
 
-			<div id="languagees" class="languages">
+			<div id="languages" class="languages">
 				<?php get_sidebar('header-area'); ?>
 			</div>
 
 			<div class="profile" style="padding-left: 1rem;">
-				<?php if (!is_user_logged_in()) :?>
+				<?php if (!is_user_logged_in()): ?>
 					<button id="login-button-head" onclick="togglemenu('user-area')"><i class="fas fa-sign-in-alt"></i> <?php qtx_string_e("Login"); ?></button>
 					<div id="user-area" class="base-box" style="position:absolute; display:none; padding: 1rem; border-radius: 7px; border: solid 2px black;">
-				<?php else :?>
-				<?php
+				<?php else:
 				/*
 				* Notifications Alert ver 0.1
 				*/
@@ -97,7 +87,6 @@
 					<a href="<?php get_permalink(); ?>?random=yes"><button style="font-size:10px" class="search-submit">Get lucky!</button></a>
 				</div>
 			</div>
-
 
 		</header><!-- #end of the header parts -->
 		<!--class="site-content"-->
