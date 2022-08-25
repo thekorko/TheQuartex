@@ -551,8 +551,6 @@ p {
   grid-gap: 2em 10px;
   margin: 0 0.5em 0 2em;
   padding: 1em 1em 1em 1em;
-  height: 900px;
-  overflow-y: auto;
 }
 
 .main-content {
