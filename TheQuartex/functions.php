@@ -10,7 +10,7 @@
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
  * @package TheQuartex
- * @version 0.1
+ * @version 0.3
  *
  */
 
@@ -682,7 +682,7 @@ function qtx_echo_post_box($j, $type) { ?>
 	</div>
 	<!--div clickeable-->
 	</a> <!--link to the post-->
-
+<?php if (is_user_logged_in()): ?>
 	<div id="post-toolbar-bottom" class="row"> <!-- This is the toolbar row for each post box -->
 		<?php
 			$post_puntos = get_post_meta($post_id, 'karma', true);
@@ -697,6 +697,7 @@ function qtx_echo_post_box($j, $type) { ?>
 				<button><img class="small-karma" title="Premio" alt="Premio" src="<?php echo get_template_directory_uri(); ?>/img/skull.png"></button>
 			</div>
 	</div>
+	<?php endif; ?>
 	</div>
 <?php
 }
@@ -834,7 +835,6 @@ function qtx_user_info($userID = 0) {
 		//'socialnetworks' => $socialnetworks = get_the_author_meta('socialnetworks', $userID),
 		//an array of patreon, paypal, sendmeacoffe
 		//'donatelinks' => $donatelinks = get_the_author_meta('donatelinks', $userID),
-
 		//'email' => $email = get_the_author_meta('email', $userID),
 		//Information disclosure
 		'nick' => $nick = get_the_author_meta('nickname', $userID),
@@ -877,6 +877,11 @@ function print_my_notifications($notification_id = 0) {
 	//Nothing to show
 	$haveNotifications = false;
 	$count = 0;
+	if (function_exists('pll_register_string')) {
+		$lang = pll_current_language();
+	} else {
+		$lang ='es';
+	}
 	foreach ($notifications as $key) {
 		$seen = $key['seen'];
 		if (!$seen) {
@@ -903,9 +908,8 @@ function print_my_notifications($notification_id = 0) {
 					$commenter_name = $user->display_name;
 					$user = get_userdata( $my_uid );
 					$my_name = $user->display_name;
-					$lang = pll_current_language();
 					$post_title = get_the_title($comm_post_id);
-					if ($lang='es') {
+					if ($lang=='es') {
 						$notification = "hey $my_name, el usuario $commenter_name comentó tu <a href='$comment_url'>post $post_title</a> ...";
 					} else {
 						$notification = "hey $my_name, the user $commenter_name commented in your <a href='$comment_url'>post $post_title</a> ...";
@@ -917,8 +921,7 @@ function print_my_notifications($notification_id = 0) {
 					$commenter_name = $user->display_name;
 					$user = get_userdata( $my_uid );
 					$my_name = $user->display_name;
-					$lang = pll_current_language();
-					if ($lang='es') {
+					if ($lang=='es') {
 						$notification = "hey $my_name, el usuario $commenter_name respondió tu comentario en el <a href='$comment_url'>post</a> ...";
 					} else {
 						$notification = "hey $my_name, the user $commenter_name replied to your comment in a <a href='$comment_url'>post</a> ...";
@@ -931,8 +934,7 @@ function print_my_notifications($notification_id = 0) {
 	if (isset($notification)) {
 		$haveNotifications = $count;
 	} else {
-		$lang = pll_current_language();
-		if ($lang='es') {
+		if ($lang=='es') {
 			$notification = "Nada nuevo por aquí, postea algo!";
 		} else {
 			$notification = "Nothing new over here, maybe post something";
@@ -1082,7 +1084,11 @@ function qtx_user_check_shortcode($atts, $content = null) {
 	if (is_user_logged_in() && !is_null($content)) {
 		return do_shortcode($content);
 	} else {
-		$lang = pll_current_language();
+		if (function_exists('pll_current_language')) {
+			$lang = pll_current_language();
+		} else {
+			$lang = 'es';
+		}
 		if (is_singular() or is_page()) {
 			if ($lang=='en') {
 				return '<a href="https://quartex.net/en/register"><img class="size-full" loading="lazy" src="'.get_template_directory_uri().'/img/register/exclusive_en.png"></a>';
