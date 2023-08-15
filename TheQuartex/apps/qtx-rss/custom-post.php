@@ -155,7 +155,7 @@ function qtx_post_type_extfeed() {
             'has_archive' => true,
             'rewrite' => array('slug' => 'external-feeds'),
             'show_in_rest' => true,
-						'supports' => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', /*'comments',*/'revisions', 'custom-fields', ),
+						'supports' => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields', ),
 		        // You can associate this CPT with a taxonomy or custom taxonomy.
 		        'taxonomies' => array( 'source_link', 'source_date', 'source_title', 'source_description', 'original_date', 'feed_sources', 'category', 'post_tag', 'sourcefeedxml', 'isatom', 'isrss'  ),
             //Taxonomies from fetched source we need to create them
