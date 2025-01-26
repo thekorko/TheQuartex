@@ -17,9 +17,9 @@ function qtxAnon_initialize() {
     $user_name = "QTXAnnonBOT";
     $user_id = username_exists( $user_name );
     if ( ! $user_id ) {
+      echo "<br>PLEASE SAVE THIS USER INFORMATION IT WILL BE SHOWN ONCE";
       echo "<br>The user id " . $user_id;
       echo "<br>The user name " . $user_name;
-      echo "We are inside the user creation";
       $random_password = wp_generate_password( $length = 20, $include_standard_special_chars = false );
       $user_id = wp_create_user( $user_name, $random_password );
       echo "<br>The user id " . $user_id;

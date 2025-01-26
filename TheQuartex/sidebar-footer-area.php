@@ -22,7 +22,7 @@
  */
 
 if ( ! is_active_sidebar( 'footer-area' ) ) {
-	echo('Sidebar is not active (Or defined as a function)');
+	echo('Sidebar footer-area is not active please enable');
 	return;
 }
 ?>

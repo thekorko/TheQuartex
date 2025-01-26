@@ -24,7 +24,7 @@
  */
 
 if ( ! is_active_sidebar( 'user-area' ) ) {
-	echo(' testing panel user-area. este panel esta diseñado para buddypress widget ' );
+	echo(' Enable buddypress login widget from buddypress plugin' );
 
 	return;
 }

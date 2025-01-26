@@ -731,7 +731,7 @@ function qtx_echo_post_blog() { ?>
 }
 
 function qtx_navigation($customquery = array()) {
-	if ( is_plugin_active( 'wp-pagenavi/wp-pagenavi.php' ) ) {
+	if(in_array('wp-pagenavi/wp-pagenavi.php', apply_filters('active_plugins', get_option('active_plugins')))){
 		//check if wp-pagenavi is active
 		if ($customquery) {
 			wp_pagenavi($customquery);
@@ -752,9 +752,9 @@ function qtx_navigation($customquery = array()) {
 		}
 	} else {
 		//fix does not work
-		echo "Wp pagenavi is disabled and the posts_navigation does not work<br>";
-		previous_posts_link();
-		next_posts_link();
+		echo "Wp pagenavi is disabled<br>";
+		previous_posts_link( __( '« Newer Posts', 'textdomain' ) );
+		next_posts_link( __( '« Older Posts', 'textdomain' ) );
 		// FIX for some reason it does not work
 		//the_posts_navigation(array( 'query' => $the_query ));
 	}
@@ -1282,7 +1282,7 @@ function qtx_social_login($version = "default") {
 						break;
 				}
 		} else {
-			echo "Wordpress Social Login does not exist or the author of the plugin changed the function identificator";
+			echo "<br>Wordpress Social Login Plugin is not installed<br>";
 			wp_login_form();
 		}
 }

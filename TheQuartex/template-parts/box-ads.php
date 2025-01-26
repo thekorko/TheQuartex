@@ -10,17 +10,7 @@
 $showPlaceholder = false;
 if (!$showPlaceholder): ?>
 <div id="ads-featured" class="base-box post-box post-normal">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5750670113076133"
-      crossorigin="anonymous"></script>
- <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-format="fluid"
-      data-ad-layout-key="-cv-1g-4t+7i+c3"
-      data-ad-client="ca-pub-5750670113076133"
-      data-ad-slot="2346393941"></ins>
- <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
- </script>
+
 </div>
 <?php else: ?>
 <?php

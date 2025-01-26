@@ -23,8 +23,6 @@
 
 if ( ! is_active_sidebar( 'footer-links' ) ) {
 ?>
-
-<span>This is an example because you didn't add any content to this widgetized area</span><br>
 <a href="<?php echo esc_url( __( 'https://wordpress.org/', 'wpQuartex' ) ); ?>">
 	<?php
 	/* translators: %s: CMS name, i.e. WordPress. */
@@ -40,7 +38,7 @@ if ( ! is_active_sidebar( 'footer-links' ) ) {
 	<!--<img src="/** php bloginfo('template_directory'); */ /img/qtx_foot.png" style="width: 500px;"></img>-->
 	<!-- delete -->
 
-<?php	echo('Sidebar footer-area is not active (Or defined as a function)');
+<?php	echo('Sidebar footer-links is not active (Or defined as a function)');
 	return;
 }
 ?>

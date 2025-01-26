@@ -19,7 +19,7 @@
  */
 
 if ( ! is_active_sidebar( 'featured-post' ) ) {
-	echo('Sidebar featured-post is not active (Or defined as a function)');
+	echo('Sidebar featured-post is not active please enable');
 	return;
 }
 ?>
