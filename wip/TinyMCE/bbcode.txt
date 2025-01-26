@@ -1,7 +1,0 @@
-add_filter('mce_external_plugins', 'my_tinymce_plugins');
-function my_tinymce_plugins() {
-    $plugins_array = array(
-                          'zbdo' => get_template_directory_uri().'/js/bbcode/plugin.min.js'
-                     );
-    return $plugins_array;
-}

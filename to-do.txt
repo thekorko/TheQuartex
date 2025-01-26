@@ -1,4 +1,0 @@
-fix search.php
-create page-apps.php //for php applications
-SSH only key <- quartex
-Pasar por proxy el dominio del server vps-33
